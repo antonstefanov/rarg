@@ -1,11 +1,10 @@
-# hello-reason
+# rarg
 
-[![Build Status](https://dev.azure.com/esy-ocaml/esy-ocaml/_apis/build/status/esy-ocaml.hello-reason?branchName=master)](https://dev.azure.com/esy-ocaml/esy-ocaml/_build/latest?definitionId=1?branchName=master)
+[![Build Status](https://dev.azure.com/esy-ocaml/esy-ocaml/_apis/build/status/esy-ocaml.rarg?branchName=master)](https://dev.azure.com/esy-ocaml/esy-ocaml/_build/latest?definitionId=1?branchName=master)
 
 A project which demonstrates a Reason workflow with [Esy][].
 
-[Esy]: https://github.com/esy-ocaml/esy
-
+[esy]: https://github.com/esy-ocaml/esy
 
 ## Usage
 
@@ -45,7 +44,6 @@ Documentation for the libraries in the project can be generated with:
 Shell into environment:
 
     % esy shell
-
 
 ## Create Prebuilt Release:
 
