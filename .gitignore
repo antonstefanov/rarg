@@ -1,8 +1,13 @@
-.merlin
+.DS_Store
 node_modules/
 _build
-_esy
-_release
 *.byte
 *.native
 *.install
+# gitignored, but not npmignored. Published by `npm run prepublish`
+_esybuild
+_esyinstall
+.merlin
+_release
+_esy
+junit.xml
