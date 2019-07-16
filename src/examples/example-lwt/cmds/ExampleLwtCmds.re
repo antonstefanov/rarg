@@ -69,6 +69,10 @@ module CmdCut = {
 
 module CmdStart = {
   let args = [];
+  /**
+  The whole commands tree needs to return the same type -> we use `Lwt.return`.
+  Alternatively you could define [type res = | Sync(unit) | Async(Lwt.t(cmdResult))] and support both sync and async
+   */
   let run = _m =>
     Error("Forgot to add a subcommand, enter --help for help.")
     |> Lwt.return(_);

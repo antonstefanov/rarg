@@ -7,8 +7,9 @@ Optimised for native ReasonML/OCaml.
 
 ## Features
 
-- **sub commands** - you can easily define a whole tree of commands
 - **autocompletion** - fast and comprehensive autocompletion of commands, arguments and values
+- **sync** and **async** commands support
+- **sub commands** - you can easily define a whole tree of commands
 - **auto configuration validation** - you can validate your whole sub commands tree configuration with a single function call in your tests
 - **auto help generation**
 - **autocorrection**
@@ -128,46 +129,14 @@ let main = {
 
 You can check the local [examples](https://github.com/antonstefanov/rarg/tree/master/src/examples) or the repo [rarg-examples](https://github.com/antonstefanov/rarg-examples) for more complete examples.
 
-## Design decisions
+## Comparison with [cmdliner](https://github.com/dbuenzli/cmdliner)
 
-(work in progress)
-`rarg`
+> This was the most requested comparison and is added for completeness, but the 2 are very different.
 
-- does not throw exceptions. It follows the philosophy that if you can predict it, then it's not an exception, so instead `rarg` uses `result(ok, err)` extensively
-- does not execute your `run` function. It returns an action to be taken and it's your responsibility to execute the function with all validated arguments. This makes it trivial to
-  - work with sync and async code
-  - return any exit codes
-- is not `POSIX` and `GNU` compliant (and does not aim to be), if you are looking for a compliant native library - check out [cmdliner](https://github.com/dbuenzli/cmdliner)
-
-## How it works
-
-(work in progress)
-`rarg`
-
-- parses the user input in a raw form - key and array of values
-- combines the parsed input with the provided commands tree (`Cmd.t`)
-- finds which command from the tree was requested (it follows any sub-commands)
-- determines what action to take
-- handles the actions it can (check [Run.re](https://github.com/antonstefanov/rarg/blob/master/src/rarg/Run.re))
-- returns back control to the user code
-
-```
-+----------+
-|          |
-| Commands |                  getRunAction
-| tree     |
-|          |   +---------+   +-----------+   +--------+   +---------+
-+------------->+         |   |           |   |        |   |         |
-               | Find    |   | Determine |   | Handle |   | Return  |
-+------------->+ command +-->+ action    +-->+ action +-->+ control |
-|          |   |         |   |           |   |        |   |         |
-| User     |   +---------+   +-----------+   +--------+   +---------+
-| input    |
-|          |
-+----------+                  Possible actions
-                              Ok: Run, Help, Suggest, Autocomplete and etc.
-                              Error: ConfigError, UserError and etc.
-```
+- `cmdliner` is hosted on `opam` | `rarg` on `npm`
+- it's likely that you would be more familiar with `cmdliner`'s API if you have an `OCaml` background and with `rarg`'s API if you are coming from other languages (including `JS`)
+- `cmdliner` is very mature and has a large ecosystem behind it, if you are already using it there's no point of switching to `rarg`
+- `rarg` has autocompletions, smaller API footprint and is simpler and less abstract in nature
 
 ## Notes
 
@@ -179,4 +148,4 @@ command [..sub-commands] [..positionals] [..options]
 
 The main `command`, optionally followed by `sub-commands`, then optional `positionals` and finally `options` (like `--foo`).
 Options always come last and cannot be between subcommands and positionals.
-This consistent structure allows for more relevant autocomplete functionality.
+This consistent structure allows for more relevant autocomplete functionality and predictable options value parsing.
