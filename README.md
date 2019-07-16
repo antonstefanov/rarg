@@ -130,6 +130,7 @@ You can check the local [examples](https://github.com/antonstefanov/rarg/tree/ma
 
 ## Design decisions
 
+(work in progress)
 `rarg`
 
 - does not throw exceptions. It follows the philosophy that if you can predict it, then it's not an exception, so instead `rarg` uses `result(ok, err)` extensively
@@ -137,6 +138,36 @@ You can check the local [examples](https://github.com/antonstefanov/rarg/tree/ma
   - work with sync and async code
   - return any exit codes
 - is not `POSIX` and `GNU` compliant (and does not aim to be), if you are looking for a compliant native library - check out [cmdliner](https://github.com/dbuenzli/cmdliner)
+
+## How it works
+
+(work in progress)
+`rarg`
+
+- parses the user input in a raw form - key and array of values
+- combines the parsed input with the provided commands tree (`Cmd.t`)
+- finds which command from the tree was requested (it follows any sub-commands)
+- determines what action to take
+- handles the actions it can (check [Run.re](https://github.com/antonstefanov/rarg/blob/master/src/rarg/Run.re))
+- returns back control to the user code
+
+```
++----------+
+|          |
+| Commands |                  getRunAction
+| tree     |
+|          |   +---------+   +-----------+   +--------+   +---------+
++------------->+         |   |           |   |        |   |         |
+               | Find    |   | Determine |   | Handle |   | Return  |
++------------->+ command +-->+ action    +-->+ action +-->+ control |
+|          |   |         |   |           |   |        |   |         |
+| User     |   +---------+   +-----------+   +--------+   +---------+
+| input    |
+|          |
++----------+                  Possible actions
+                              Ok: Run, Help, Suggest, Autocomplete and etc.
+                              Error: ConfigError, UserError and etc.
+```
 
 ## Notes
 
