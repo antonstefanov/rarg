@@ -1,0 +1,8 @@
+Rarg_ComponentsErrors › DuplicateArgs › renders duplicates when 1
+You must define unique argument names. <bold>Duplicates:</bold>
+
+<red>--key1</red>
+  <white>--bake</white>  Whether to bake the fruit <bold>[bool]=false</bold><italic></italic>
+  <white>--bake</white>  Whether to bake the fruit <bold>[bool]=false</bold><italic></italic>
+
+

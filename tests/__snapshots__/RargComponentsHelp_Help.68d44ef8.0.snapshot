@@ -1,0 +1,14 @@
+Rarg_ComponentsHelp › Help › CmdFind
+<bold>Find</bold>
+
+Command signature:
+  <white>my-app-name <..patterns> [options]</white>
+
+
+Positionals:
+  <white>patterns</white>  Patterns to find <bold><..string></bold><italic></italic>
+  Patterns to find
+
+Options:
+  <white>--copy</white>  Whether to copy the results <bold>[bool]=false</bold><italic></italic>
+

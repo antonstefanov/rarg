@@ -1,30 +1,35 @@
 {
   "name": "rarg",
-  "version": "0.1.0",
-  "description": "Example Reason Esy Project",
+  "version": "0.1.9",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antonstefanov/rarg/tree/master/src/rarg"
+  },
+  "author": {
+    "name": "Anton Stefanov",
+    "email": "anton.stefanov@live.com"
+  },
   "license": "MIT",
+  "keywords": ["cli", "args", "reasonml", "reason", "ocaml", "esy"],
   "esy": {
-    "build": "refmterr dune build -p #{self.name}",
-    "NOTE": "Optional release Section. Customizes result of `esy release`",
-    "release": {
-      "bin": ["rarg"]
-    }
+    "build": "refmterr dune build -p rarg",
+    "install": "esy-installer rarg.install"
   },
   "scripts": {
-    "run": "esy x rarg",
-    "doc": "esy dune build @doc"
+    "release": "node ./scripts/esy-prepublish.js rarg.json"
   },
   "dependencies": {
     "@esy-ocaml/reason": ">= 3.4.0 < 3.5.0",
     "@opam/dune": "1.10.0",
-    "@reason-native/console": "*",
     "@reason-native/pastel": "*",
     "ocaml": "~4.6.0",
-    "refmterr": "*"
+    "refmterr": "*",
+    "@reason-native/rely": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "ocaml": "~4.6.0",
-    "@opam/odoc": "*"
+    "@opam/odoc": "1.4.1"
   }
 }

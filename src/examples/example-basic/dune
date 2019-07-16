@@ -1,0 +1,5 @@
+(executable
+  (name ExampleBasic)
+  (public_name example-basic)
+  (package example-basic)
+  (libraries rarg Cmds))

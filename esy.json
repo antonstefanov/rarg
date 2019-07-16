@@ -1,34 +1,50 @@
 {
   "name": "rarg-dev",
   "version": "0.1.0",
-  "description": "Example Reason Esy Project",
+  "description": "A simple, focused and expressive library for building command line applications.",
   "license": "MIT",
+  "author": {
+    "name": "Anton Stefanov",
+    "email": "anton.stefanov@live.com"
+  },
   "esy": {
     "build": "refmterr dune build --profile=release",
     "NOTE": "Optional release Section. Customizes result of `esy release`",
     "install": [
       "esy-installer rarg.install",
       "esy-installer tests.install",
-      "esy-installer qw.install"
-    ]
+      "esy-installer example-basic.install",
+      "esy-installer example-lwt.install"
+    ],
+    "buildEnv": {
+      "ODOC_SYNTAX": "re"
+    }
   },
   "scripts": {
     "test": "esy x bash -cx ./scripts/test-dev.cmd",
     "test-ci": "esy x bash -cx ./scripts/test-ci.cmd",
-    "doc": "esy dune build @doc"
+    "example": "esy x example-basic",
+    "example-lwt": "esy x example-lwt",
+    "doc": "esy dune build @doc",
+    "opendoc": "esy open '#{self.target_dir}/default/_doc/_html/rarg/Rarg/index.html'"
   },
+  "repository": "https://github.com/antonstefanov/rarg",
+  "homepage": "https://github.com/antonstefanov/rarg",
+  "bugs": "https://github.com/antonstefanov/rarg/issues",
   "dependencies": {
     "@esy-ocaml/reason": ">= 3.4.0 < 3.5.0",
     "@opam/dune": "1.10.0",
-    "@reason-native/console": "*",
+    "@opam/lwt": "4.2.1",
+    "@opam/lwt_ppx": "1.2.2",
     "@reason-native/pastel": "*",
-    "@reason-native/rely": "*",
     "ocaml": "~4.6.0",
     "refmterr": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "ocaml": "~4.6.0",
-    "@opam/odoc": "*"
+    "@opam/odoc": "*",
+    "@reason-native/console": "*",
+    "@reason-native/rely": "*"
   }
 }

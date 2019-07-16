@@ -1,0 +1,13 @@
+Rarg_ComponentsTips › InstallScript › renders install script for zsh
+# my-app
+alias my-app='/a/b/c'
+
+_rarg_{{app_name}}_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'\\n' reply=($(COMP_CWORD=\"$((CURRENT-1))\" COMP_LINE=\"$BUFFER\" COMP_POINT=\"$CURSOR\" {{app_path}} \"\\${words[@]:1}\" --rarg-suggestions-request))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _rarg_{{app_name}}_completions {{app_name}}

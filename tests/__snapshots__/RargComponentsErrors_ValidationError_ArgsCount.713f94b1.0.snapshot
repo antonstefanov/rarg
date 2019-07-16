@@ -1,0 +1,4 @@
+Rarg_ComponentsErrors › ValidationError › ArgsCount › shows true recommendation when info
+Some info
+Did you mean:
+  <cyan>true</cyan>

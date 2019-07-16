@@ -1,0 +1,3 @@
+(library
+  (name Cmds)
+  (libraries rarg pastel.lib))

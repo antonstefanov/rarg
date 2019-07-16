@@ -1,0 +1,6 @@
+Rarg_ComponentsErrors › InvalidArgNames › renders no-dash arg names
+Argument names must start with a -
+
+  <white>invalid-arg-name</white>  Whether to bake the fruit <bold>[bool]=false</bold><italic></italic>
+
+
