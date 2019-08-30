@@ -2,16 +2,9 @@ open TestFramework;
 
 module ArgsMap = RargInternal.ArgsMap;
 
-let makeExpectSome =
-    (
-      expect: RelyInternal.DefaultMatchers.matchers(unit),
-      result,
-      arg,
-      expected,
-    ) =>
+let makeExpectSome = (expect, result, arg, expected) =>
   expect.option(ArgsMap.getOpt(arg, result)).toBe(Some(expected));
-let makeExpectNone =
-    (expect: RelyInternal.DefaultMatchers.matchers(unit), result, arg) =>
+let makeExpectNone = (expect, result, arg) =>
   expect.option(ArgsMap.getOpt(arg, result)).toBe(None);
 
 let tsplit = str => ArgsMap.split(str) |> List.rev(_);

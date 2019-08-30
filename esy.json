@@ -1,24 +1,19 @@
 {
   "name": "rarg-dev",
-  "version": "0.1.0",
-  "description": "A simple, focused and expressive library for building command line applications.",
+  "version": "0.1.1",
+  "description":
+    "A simple, focused and expressive library for building command line applications.",
   "license": "MIT",
-  "author": {
-    "name": "Anton Stefanov",
-    "email": "anton.stefanov@live.com"
-  },
+  "author": { "name": "Anton Stefanov", "email": "anton.stefanov@live.com" },
   "esy": {
     "build": "refmterr dune build --profile=release",
     "NOTE": "Optional release Section. Customizes result of `esy release`",
     "install": [
-      "esy-installer rarg.install",
-      "esy-installer tests.install",
+      "esy-installer rarg.install", "esy-installer tests.install",
       "esy-installer example-basic.install",
       "esy-installer example-lwt.install"
     ],
-    "buildEnv": {
-      "ODOC_SYNTAX": "re"
-    }
+    "buildEnv": { "ODOC_SYNTAX": "re" }
   },
   "scripts": {
     "test": "esy x bash -cx ./scripts/test-dev.cmd",
@@ -26,17 +21,19 @@
     "example": "esy x example-basic",
     "example-lwt": "esy x example-lwt",
     "doc": "esy dune build @doc",
-    "opendoc": "esy open '#{self.target_dir}/default/_doc/_html/rarg/Rarg/index.html'"
+    "opendoc":
+      "esy open '#{self.target_dir}/default/_doc/_html/rarg/Rarg/index.html'"
   },
   "repository": "https://github.com/antonstefanov/rarg",
   "homepage": "https://github.com/antonstefanov/rarg",
   "bugs": "https://github.com/antonstefanov/rarg/issues",
   "dependencies": {
-    "@esy-ocaml/reason": ">= 3.4.0 < 3.5.0",
+    "@esy-ocaml/reason": ">= 3.4.0",
     "@opam/dune": "1.10.0",
     "@opam/lwt": "4.2.1",
     "@opam/lwt_ppx": "1.2.2",
     "@reason-native/pastel": "*",
+    "@reason-native/rely": "^3.1.0",
     "ocaml": "~4.6.0",
     "refmterr": "*"
   },
