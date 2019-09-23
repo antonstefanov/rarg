@@ -23,19 +23,17 @@ module CmdFruits = {
   let (args, getFruits) =
     Args.Many.req(~args, ~name="--fruits", ~doc="Fruits to cook", fruit);
   let (args, getBake) =
-    Args.One.flag(
+    Args.One.boolFlag(
       ~args,
       ~name="--bake",
       ~doc="Whether to bake the fruit",
-      ~default=false,
       T.bool,
     );
   let (args, getCut) =
-    Args.One.flag(
+    Args.One.boolFlag(
       ~args,
       ~name="--cut",
       ~doc="Whether to cut the fruit",
-      ~default=false,
       T.bool,
     );
   let handle = (~fruits as _: list(t), ~bake as _: bool, ~cut as _: bool) =>
@@ -119,11 +117,10 @@ module CmdFind = {
       T.string,
     );
   let (args, getCopy) =
-    Args.One.flag(
+    Args.One.boolFlag(
       ~args,
       ~name="--copy",
       ~doc="Whether to copy the results",
-      ~default=false,
       T.bool,
     );
   let handle = (~patterns as _: list(string), ~copy as _: bool) => ();

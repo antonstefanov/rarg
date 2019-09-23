@@ -58,13 +58,13 @@ module One = {
     };
   };
   let flag =
-      (~default: 'a, ~parse: Type.parse('a), value: value)
+      (~default: 'a, ~empty: 'a, ~parse: Type.parse('a), value: value)
       : result('a, Err.t) => {
     switch (value) {
     | None => Ok(default)
     | Some(xs) =>
       switch (Array.length(xs)) {
-      | 0 => Ok(default)
+      | 0 => Ok(empty)
       | _ => Internal.handleOneArg(parse, xs)
       }
     };

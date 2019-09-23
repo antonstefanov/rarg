@@ -70,7 +70,7 @@ module One: {
 {- Provide an arg with this name and [no values] -> [default] will be returned}
 {- Provide an arg with this name and [exactly 1 value] -> [provided value] will be returned}
 {- Provide an arg with this name and [more than 1 value] -> [validation error]}
-{- [Don't provide] an arg with this name -> [default] will be returned}
+{- [Don't provide] an arg with this name -> [empty] will be returned}
 }
 */
   let flag:
@@ -80,9 +80,24 @@ module One: {
       ~alias: string=?,
       ~doc: string,
       ~default: 'a,
+      ~empty: 'a,
       Type.t('a)
     ) =>
     argValidateTuple('a);
+  /**
+  A specialized version of the flag
+  */
+  let boolFlag:
+    (
+      ~args: list((t, validate)),
+      ~name: string,
+      ~alias: string=?,
+      ~doc: string,
+      ~default: bool=?,
+      ~empty: bool=?,
+      Type.t(bool)
+    ) =>
+    argValidateTuple(bool);
   /**
   Required value, if users:
 {ul

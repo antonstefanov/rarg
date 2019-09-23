@@ -1,6 +1,6 @@
 {
   "name": "rarg-dev",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A simple, focused and expressive library for building command line applications.",
   "license": "MIT",
   "author": { "name": "Anton Stefanov", "email": "anton.stefanov@live.com" },
@@ -28,9 +28,9 @@
   "bugs": "https://github.com/antonstefanov/rarg/issues",
   "dependencies": {
     "@esy-ocaml/reason": ">= 3.4.0",
-    "@opam/dune": "1.10.0",
-    "@opam/lwt": "4.2.1",
-    "@opam/lwt_ppx": "1.2.2",
+    "@opam/dune": "^1.10.0",
+    "@opam/lwt": "^4.2.1",
+    "@opam/lwt_ppx": "^1.2.2",
     "@reason-native/pastel": "*",
     "@reason-native/rely": "^3.1.0",
     "ocaml": "~4.6.0",

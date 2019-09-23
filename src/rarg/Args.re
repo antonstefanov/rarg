@@ -76,6 +76,7 @@ module One = {
         ~alias: option(string)=?,
         ~doc: string,
         ~default: 'a,
+        ~empty: 'a,
         parser: Type.t('a),
       )
       : argValidateTuple('a) => {
@@ -94,9 +95,22 @@ module One = {
     Internal.cmd(
       ~args,
       ~arg,
-      ~get=ValidateArgs.One.flag(~parse=parser.parse, ~default),
+      ~get=ValidateArgs.One.flag(~parse=parser.parse, ~default, ~empty),
     );
   };
+  let boolFlag =
+      (
+        ~args: list((t, validate)),
+        ~name: string,
+        ~alias: option(string)=?,
+        ~doc: string,
+        ~default: bool=false,
+        ~empty: bool=true,
+        parser: Type.t(bool),
+      )
+      : argValidateTuple('a) =>
+    flag(~args, ~name, ~alias?, ~doc, ~default, ~empty, parser);
+
   let req =
       (
         ~args: list((t, validate)),
@@ -286,6 +300,7 @@ module Positional = {
         ~alias=?name,
         ~doc,
         ~default,
+        ~empty=default,
         parser,
       );
 

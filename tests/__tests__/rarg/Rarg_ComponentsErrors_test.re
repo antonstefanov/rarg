@@ -8,11 +8,10 @@ module E = RargInternal.ValidateArgs.Err;
 module A = Rarg.Type;
 let argBake = {
   let (args, _) =
-    Args.One.flag(
+    Args.One.boolFlag(
       ~args=[],
       ~name="--bake",
       ~doc="Whether to bake the fruit",
-      ~default=false,
       A.bool,
     );
   let (arg, _) = List.hd(args);
@@ -42,11 +41,10 @@ describe("Rarg_ComponentsErrors", t => {
   t.describe("InvalidArgNames", t => {
     let argEmpty = {
       let (args, _) =
-        Args.One.flag(
+        Args.One.boolFlag(
           ~args=[],
           ~name="",
           ~doc="Whether to bake the fruit",
-          ~default=false,
           A.bool,
         );
       let (arg, _) = List.hd(args);
@@ -54,11 +52,10 @@ describe("Rarg_ComponentsErrors", t => {
     };
     let argNoDash = {
       let (args, _) =
-        Args.One.flag(
+        Args.One.boolFlag(
           ~args=[],
           ~name="invalid-arg-name",
           ~doc="Whether to bake the fruit",
-          ~default=false,
           A.bool,
         );
       let (arg, _) = List.hd(args);
@@ -105,11 +102,10 @@ describe("Rarg_ComponentsErrors", t => {
   t.describe("UnknownArgs", t => {
     let args = [];
     let (args, _) =
-      Args.One.flag(
+      Args.One.boolFlag(
         ~args,
         ~name="--bake",
         ~doc="Whether to bake the fruit",
-        ~default=false,
         A.bool,
       );
     let (args, _) =

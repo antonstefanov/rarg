@@ -32,23 +32,25 @@ describe("Rarg_ValidateArgs", t => {
   t.describe("One", t => {
     let parse = str => Ok(str);
     let default = "default-value";
+    let empty = "empty-value";
     let oneValue = List.hd(V.one);
     t.describe("flag", t => {
       t.test("returns the default value when no value is provided", t =>
-        t.expect.result(A.One.flag(~parse, ~default, O.none)).toBe(
+        t.expect.result(A.One.flag(~parse, ~default, ~empty, O.none)).toBe(
           Ok(default),
         )
       );
-      t.test("returns the default value for empty values", t =>
-        t.expect.result(A.One.flag(~parse, ~default, O.empty)).toBe(
-          Ok(default),
+      t.test("returns the empty value for empty values", t =>
+        t.expect.result(A.One.flag(~parse, ~default, ~empty, O.empty)).toBe(
+          Ok(empty),
         )
       );
       t.test("returns an error for required one, but provided many values", t =>
-        t.expect.result(A.One.flag(~parse, ~default, O.many)).toBeError()
+        t.expect.result(A.One.flag(~parse, ~default, ~empty, O.many)).
+          toBeError()
       );
       t.test("returns ok when one value is provided", t =>
-        t.expect.result(A.One.flag(~parse, ~default, O.one)).toBe(
+        t.expect.result(A.One.flag(~parse, ~default, ~empty, O.one)).toBe(
           Ok(oneValue),
         )
       );

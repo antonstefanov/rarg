@@ -1,6 +1,6 @@
 {
   "name": "rarg",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@esy-ocaml/reason": ">= 3.4.0",
-    "@opam/dune": "1.10.0",
+    "@opam/dune": "^1.10.0",
     "@reason-native/pastel": "*",
     "ocaml": "~4.6.0",
     "refmterr": "*",
