@@ -36,11 +36,10 @@ esy add rarg
 ```reasonml
 module MyCmd = {
   let args = []
-  let (args, getCopy) = Args.One.flag(
+  let (args, getCopy) = Args.One.boolFlag(
       ~args,
       ~name="--copy",
       ~doc="Whether to copy",
-      ~default=false,
       Type.bool,
     );
   let (args, getColor) =
