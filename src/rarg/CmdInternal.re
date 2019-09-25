@@ -6,6 +6,7 @@ module StringMap = Seed.DataStructures.StringMap;
 type children('a) = StringMap.t(t('a))
 and t('a) = {
   name: string,
+  version: string,
   doc: option(string),
   args: list((Args.t, Args.validate)),
   run: run('a),
@@ -168,6 +169,7 @@ module Action = {
   type t =
     | Run
     | Help
+    | Version
     | Suggest
     | AutoCompleteScript
     | AddPath
@@ -192,17 +194,20 @@ let getCmdAction =
                 ? Ok(Action.RemovePath)
                 : ArgsMap.hasHelp(argsMap)
                     ? Ok(Action.Help)
-                    : (
-                      switch (
-                        Validate.providedArgs(cmd.args, ~argsMap, ~isKnown=key =>
-                          StringMap.has(key, knownArgs)
+                    : ArgsMap.hasVersion(argsMap)
+                        ? Ok(Action.Version)
+                        : (
+                          switch (
+                            Validate.providedArgs(
+                              cmd.args, ~argsMap, ~isKnown=key =>
+                              StringMap.has(key, knownArgs)
+                            )
+                          ) {
+                          | Ok () => Ok(Action.Run)
+                          | Error(validationErrors) =>
+                            Error(UserError(validationErrors))
+                          }
                         )
-                      ) {
-                      | Ok () => Ok(Action.Run)
-                      | Error(validationErrors) =>
-                        Error(UserError(validationErrors))
-                      }
-                    )
     };
   };
 

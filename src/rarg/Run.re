@@ -22,6 +22,7 @@ module RunResult = {
   type ok('a) =
     | Run('a)
     | Help(string)
+    | Version(string)
     | Suggest(string)
     | AutoCompleteScript(string)
     | AddPath(string, string)
@@ -79,6 +80,7 @@ let simplify =
     switch (action) {
     | Run => Ok(RunResult.Run(cmd.run(argsMap)))
     | Help => Ok(RunResult.Help(<ComponentsHelp.Help cmd appName />))
+    | Version => Ok(Version(cmd.version))
     | Suggest =>
       Ok(
         RunResult.Suggest(
@@ -153,6 +155,9 @@ let autorun =
       | Some(logo) => print_endline(logo)
       };
       print_endline(str);
+      Ok(Handled);
+    | Version(version) =>
+      print_endline(version);
       Ok(Handled);
     | Suggest(str)
     | AutoCompleteScript(str) =>

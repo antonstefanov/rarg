@@ -37,6 +37,7 @@ or the repo {{:https://github.com/antonstefanov/rarg-examples} rarg-examples} fo
 let make:
   (
     ~name: string,
+    ~version: string,
     ~doc: string=?,
     ~args: list((Args.t, Args.validate)),
     ~run: CmdInternal.run('a),

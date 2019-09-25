@@ -12,9 +12,15 @@ describe("Rarg_Cmd", t => {
       Args.One.req(~args=[], ~name="--v1", ~doc="v1 doc", A.bool);
     let (argsDuplicate, _) =
       Args.One.req(~args, ~name="--v1", ~doc="v1 duplicate doc", A.string);
-    let cmd = Cmd.make(~name="cmd", ~args, ~run, ());
+    let cmd = Cmd.make(~name="cmd", ~version="1.0", ~args, ~run, ());
     let cmdDuplicate =
-      Cmd.make(~name="cmd-duplicate", ~args=argsDuplicate, ~run, ());
+      Cmd.make(
+        ~name="cmd-duplicate",
+        ~version="1.0",
+        ~args=argsDuplicate,
+        ~run,
+        (),
+      );
 
     t.test("is ok when cmd is valid", t =>
       t.expect.result(C.validate(cmd)).toBeOk()
@@ -24,13 +30,21 @@ describe("Rarg_Cmd", t => {
     );
     t.test("is ok when sub cmd is valid", t => {
       let cmdTree =
-        Cmd.make(~name="tree", ~args, ~run, ~children=[("valid", cmd)], ());
+        Cmd.make(
+          ~name="tree",
+          ~version="1.0",
+          ~args,
+          ~run,
+          ~children=[("valid", cmd)],
+          (),
+        );
       t.expect.result(C.validate(cmdTree)).toBeOk();
     });
     t.test("is error when sub cmd is invalid", t => {
       let cmdTree =
         Cmd.make(
           ~name="tree",
+          ~version="1.0",
           ~args,
           ~run,
           ~children=[("duplicates", cmdDuplicate)],
@@ -42,6 +56,7 @@ describe("Rarg_Cmd", t => {
       let validateLines =
         Cmd.make(
           ~name="tree",
+          ~version="1.0",
           ~args,
           ~run,
           ~children=[("duplicates", cmdDuplicate)],

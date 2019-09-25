@@ -12,6 +12,7 @@ module R = {
     type t =
       | Run
       | Help
+      | Version
       | Suggest
       | AutoCompleteScript
       | AddPath
@@ -20,6 +21,7 @@ module R = {
       fun
       | Run => "Run"
       | Help => "Help"
+      | Version => "Version"
       | Suggest => "Suggest"
       | AutoCompleteScript => "AutoCompleteScript"
       | AddPath => "AddPath"
@@ -28,6 +30,7 @@ module R = {
       switch (a) {
       | Run => Run
       | Help => Help
+      | Version => Version
       | Suggest => Suggest
       | AutoCompleteScript => AutoCompleteScript
       | AddPath => AddPath
@@ -184,7 +187,14 @@ describe("Rarg_CmdInternal", t =>
                 ~doc="v1 duplicate doc",
                 T.string,
               );
-            let cmd = Cmd.make(~name="duplicate", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="duplicate",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v2", "tru"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.DuplicateArgs);
           });
@@ -197,7 +207,14 @@ describe("Rarg_CmdInternal", t =>
                 ~doc="v1 duplicate doc",
                 T.string,
               );
-            let cmd = Cmd.make(~name="arg names", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="arg names",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v2", "tru"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgNames);
           });
@@ -209,7 +226,14 @@ describe("Rarg_CmdInternal", t =>
                 ~doc="v1 duplicate doc",
                 T.string,
               );
-            let cmd = Cmd.make(~name="unknown args", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="unknown args",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v2", "tru"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.UnknownArgs);
           });
@@ -221,7 +245,14 @@ describe("Rarg_CmdInternal", t =>
                 ~doc="v1 duplicate doc",
                 T.bool,
               );
-            let cmd = Cmd.make(~name="unknown args", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="unknown args",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v1", "tru"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgValues);
           });
@@ -279,7 +310,14 @@ describe("Rarg_CmdInternal", t =>
                 ~doc="v1 duplicate doc",
                 T.string,
               );
-            let cmd = Cmd.make(~name="duplicate", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="duplicate",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|""|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.DuplicateArgs);
             let (a, _) = List.nth(args, 0);
@@ -293,14 +331,27 @@ describe("Rarg_CmdInternal", t =>
           t.test("allows positionals", t => {
             let (args, _) =
               Args.Positional.One.req(~args=[], ~doc="v1 doc", T.bool);
-            let cmd = Cmd.make(~name="positionals", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="positionals",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             t.expect.result(get(cmd, [|"true"|])).toBeOk();
           });
           t.test("returns an invalid args error when empty", t => {
             let (args, _) =
               Args.One.req(~args=[], ~name="", ~doc="v1 doc", T.bool);
             let cmd =
-              Cmd.make(~name="empty arg names", ~args, ~run=_ => (), ());
+              Cmd.make(
+                ~name="empty arg names",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|""|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgNames);
             let (a, _) = List.nth(args, 0);
@@ -316,7 +367,13 @@ describe("Rarg_CmdInternal", t =>
                 T.bool,
               );
             let cmd =
-              Cmd.make(~name="non-dash arg names", ~args, ~run=_ => (), ());
+              Cmd.make(
+                ~name="non-dash arg names",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|""|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgNames);
             let (a, _) = List.nth(args, 0);
@@ -327,14 +384,28 @@ describe("Rarg_CmdInternal", t =>
           t.test("returns invalid arg values when req not provided", t => {
             let (args, _) =
               Args.One.req(~args=[], ~name="--v1", ~doc="v1 doc", T.bool);
-            let cmd = Cmd.make(~name="invalid args", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="invalid args",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v1"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgValues);
           });
           t.test("returns invalid arg values when type is incorrect", t => {
             let (args, _) =
               Args.One.req(~args=[], ~name="--v1", ~doc="v1 doc", T.bool);
-            let cmd = Cmd.make(~name="invalid args", ~args, ~run=_ => (), ());
+            let cmd =
+              Cmd.make(
+                ~name="invalid args",
+                ~version="1.0",
+                ~args,
+                ~run=_ => (),
+                (),
+              );
             let err = get(cmd, [|"--v1", "tru"|]) |> R.Err.ofResult;
             t.expect.equal(err |> R.Err.ofCmd, R.Err.InvalidArgValues);
           });
@@ -368,6 +439,12 @@ describe("Rarg_CmdInternal", t =>
             get(Commands.CmdStart.cmd, [|ArgsMap.helpKey|]) |> R.Ok.ofResult;
           t.expect.same(ok |> R.Ok.ofCmd, R.Ok.Help);
         });
+        t.test("returns a version when arg is present", t => {
+          let ok =
+            get(Commands.CmdStart.cmd, [|ArgsMap.versionKey|])
+            |> R.Ok.ofResult;
+          t.expect.same(ok |> R.Ok.ofCmd, R.Ok.Version);
+        });
         t.test("returns an autocomplete when arg is present", t => {
           let ok =
             get(Commands.CmdStart.cmd, [|ArgsMap.suggestionsScriptKey|])
@@ -383,6 +460,7 @@ describe("Rarg_CmdInternal", t =>
                 ArgsMap.removePathKey,
                 ArgsMap.addPathKey,
                 ArgsMap.helpKey,
+                ArgsMap.versionKey,
                 ArgsMap.suggestionsRequestKey,
               |],
             )
@@ -398,6 +476,7 @@ describe("Rarg_CmdInternal", t =>
                 ArgsMap.removePathKey,
                 ArgsMap.addPathKey,
                 ArgsMap.helpKey,
+                ArgsMap.versionKey,
               |],
             )
             |> R.Ok.ofResult;
@@ -407,7 +486,12 @@ describe("Rarg_CmdInternal", t =>
           let ok =
             get(
               Commands.CmdStart.cmd,
-              [|ArgsMap.removePathKey, ArgsMap.addPathKey, ArgsMap.helpKey|],
+              [|
+                ArgsMap.removePathKey,
+                ArgsMap.addPathKey,
+                ArgsMap.helpKey,
+                ArgsMap.versionKey,
+              |],
             )
             |> R.Ok.ofResult;
           t.expect.same(ok |> R.Ok.ofCmd, R.Ok.AddPath);
@@ -416,14 +500,30 @@ describe("Rarg_CmdInternal", t =>
           let ok =
             get(
               Commands.CmdStart.cmd,
-              [|ArgsMap.removePathKey, ArgsMap.helpKey|],
+              [|ArgsMap.removePathKey, ArgsMap.helpKey, ArgsMap.versionKey|],
             )
             |> R.Ok.ofResult;
           t.expect.same(ok |> R.Ok.ofCmd, R.Ok.RemovePath);
         });
+        t.test("prioritizes help", t => {
+          let ok =
+            get(
+              Commands.CmdStart.cmd,
+              [|ArgsMap.helpKey, ArgsMap.versionKey|],
+            )
+            |> R.Ok.ofResult;
+          t.expect.same(ok |> R.Ok.ofCmd, R.Ok.Help);
+        });
         t.test("returns run when cmd contains no args", t => {
           let args = [];
-          let cmd = Cmd.make(~name="invalid args", ~args, ~run=_ => (), ());
+          let cmd =
+            Cmd.make(
+              ~name="invalid args",
+              ~version="1.0",
+              ~args,
+              ~run=_ => (),
+              (),
+            );
           let ok = get(cmd, [||]) |> R.Ok.ofResult;
           t.expect.same(ok |> R.Ok.ofCmd, R.Ok.Run);
         });
@@ -431,7 +531,14 @@ describe("Rarg_CmdInternal", t =>
           let args = [];
           let (args, _) =
             Args.One.req(~args, ~name="--v1", ~doc="v1 doc", T.bool);
-          let cmd = Cmd.make(~name="Args provided", ~args, ~run=_ => (), ());
+          let cmd =
+            Cmd.make(
+              ~name="Args provided",
+              ~version="1.0",
+              ~args,
+              ~run=_ => (),
+              (),
+            );
           let ok = get(cmd, [|"--v1", "true"|]) |> R.Ok.ofResult;
           t.expect.same(ok |> R.Ok.ofCmd, R.Ok.Run);
         });

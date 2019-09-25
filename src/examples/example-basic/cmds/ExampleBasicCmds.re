@@ -41,7 +41,8 @@ module CmdFruits = {
   let handle = (~fruits: list(fruit), ~bake: bool, ~cut: bool) => ();
   let run = m =>
     handle(~fruits=getFruits(m), ~bake=getBake(m), ~cut=getCut(m));
-  let cmd: Cmd.t(unit) = Cmd.make(~name="Fruits", ~args, ~run, ());
+  let cmd: Cmd.t(unit) =
+    Cmd.make(~name="Fruits", ~version="1.1", ~args, ~run, ());
 };
 
 module CmdCar = {
@@ -92,6 +93,7 @@ module CmdCar = {
   let cmd: Cmd.t(unit) =
     Cmd.make(
       ~name="Build a car",
+      ~version="1.2",
       ~doc=
         "Allows you to build amazing "
         ++ <Pastel color=Cyan> "cars" </Pastel>
@@ -122,7 +124,8 @@ module CmdFind = {
 
   let handle = (~patterns: list(string), ~copy: bool) => ();
   let run = m => handle(~patterns=getPatterns(m), ~copy=getCopy(m));
-  let cmd: Cmd.t(unit) = Cmd.make(~name="Find", ~args, ~run, ());
+  let cmd: Cmd.t(unit) =
+    Cmd.make(~name="Find", ~version="1.3", ~args, ~run, ());
 };
 
 module CmdStart = {
@@ -132,6 +135,7 @@ module CmdStart = {
   let cmd: Cmd.t(unit) =
     Cmd.make(
       ~name="Start",
+      ~version="1.0",
       ~args,
       ~run,
       ~children=[

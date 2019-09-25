@@ -40,7 +40,8 @@ module CmdFruits = {
     ();
   let run = m =>
     handle(~fruits=getFruits(m), ~bake=getBake(m), ~cut=getCut(m));
-  let cmd: Cmd.t(unit) = Cmd.make(~name="Fruits", ~args, ~run, ());
+  let cmd: Cmd.t(unit) =
+    Cmd.make(~name="Fruits", ~version="1.0", ~args, ~run, ());
 };
 module CmdCar = {
   let car = T.withChoices(T.string, T.Choices.Suggestions(["alfa", "bmw"]));
@@ -95,6 +96,7 @@ module CmdCar = {
   let cmd: Cmd.t(unit) =
     Cmd.make(
       ~name="Build a car",
+      ~version="1.0",
       ~doc=
         "Allows you to build amazing "
         ++ <RargInternal.Components.Span color=Cyan>
@@ -125,7 +127,8 @@ module CmdFind = {
     );
   let handle = (~patterns as _: list(string), ~copy as _: bool) => ();
   let run = m => handle(~patterns=getPatterns(m), ~copy=getCopy(m));
-  let cmd: Cmd.t(unit) = Cmd.make(~name="Find", ~args, ~run, ());
+  let cmd: Cmd.t(unit) =
+    Cmd.make(~name="Find", ~version="1.0", ~args, ~run, ());
 };
 module CmdStart = {
   let args = [];
@@ -134,6 +137,7 @@ module CmdStart = {
   let cmd: Cmd.t(unit) =
     Cmd.make(
       ~name="Start",
+      ~version="1.0",
       ~args,
       ~run,
       ~children=[

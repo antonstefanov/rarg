@@ -23,6 +23,7 @@ let suggestionsScriptKey = "--rarg-suggestions-script";
 let addPathKey = "--rarg-add-path";
 let removePathKey = "--rarg-remove-path";
 let helpKey = "--help";
+let versionKey = "--version";
 let getOpt = (key: StringMap.key, map: t): option(array(string)) =>
   StringMap.getOpt(key, map);
 let getEither =
@@ -34,6 +35,7 @@ let getEither =
   )
   |> Seed.Option.either;
 let hasHelp = (map: t): bool => StringMap.has(helpKey, map);
+let hasVersion = (map: t): bool => StringMap.has(versionKey, map);
 let hasAddPath = (map: t): bool => StringMap.has(addPathKey, map);
 let hasRemovePath = (map: t): bool => StringMap.has(removePathKey, map);
 let hasSuggestionsRequest = (map: t): bool =>

@@ -42,6 +42,7 @@ let validate = (cmd: t('a)): result(unit, validateErr('a)) => {
 let make =
     (
       ~name: string,
+      ~version: string,
       ~doc: option(string)=?,
       ~args: list((Args.t, Args.validate)),
       ~run: CmdInternal.run('a),
@@ -50,6 +51,7 @@ let make =
     )
     : t('a) => {
   name,
+  version,
   doc,
   args,
   run,

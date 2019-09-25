@@ -86,7 +86,7 @@ For the [Type](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Type/inde
   let handle = (~fruits: list(fruit), ~copy: bool, ~color: string) => ();
   // Define a run function that will use the getters returned from `Args` to get all provided user arguments.
   let run = m => handle(~fruits=getFruits(m), ~copy=getCopy(m), ~color=getColor(m));
-  let cmd: Cmd.t(unit) = Cmd.make(~name="My Command", ~args, ~run, ());
+  let cmd: Cmd.t(unit) = Cmd.make(~name="My Command", ~version="1.0", ~args, ~run, ());
 } // module MyCmd close
 ```
 
@@ -99,6 +99,7 @@ module AnotherCmd = {
   let cmd: Cmd.t(unit) =
     Cmd.make(
       ~name="Another Command",
+      ~version="1.0",
       ~args,
       ~run,
       ~children=[("my-cmd", MyCmd.cmd)],
@@ -106,6 +107,8 @@ module AnotherCmd = {
     );
 }
 ```
+
+> In `rarg` every command/subcommand is a complete unit of work, that can exist on its own, has no dependencies of its parents. That's why every command has its own version.
 
 3. And finally you can run your command with [Run](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Run/index.html)
 
@@ -121,6 +124,7 @@ let main = {
 ## System arguments (auto-included)
 
 - `--help` - display command help
+- `--version` - display command version
 - `--rarg-suggestions-script` - displays a script with instsructions how to install it to enable autocompletion
 - `--rarg-add-path` - displays a script with instructions how to add the app executable to the user's path
 

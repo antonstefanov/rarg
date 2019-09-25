@@ -25,6 +25,7 @@ let run = (cmd: RargInternal.Cmd.t('a), args: list(string)) => {
       ...switch (ok) {
          | Run(_) => ["Run"]
          | Help(help) => ["Help", help]
+         | Version(version) => ["Version", version]
          | Suggest(suggestions) => ["Suggest", suggestions]
          // autocomplete script depends on environment
          | AutoCompleteScript(script) => ["AutoCompleteScript", script]
@@ -86,6 +87,10 @@ describe("Rarg_Run", t => {
     });
     t.test("Help", t => {
       let result = runFruits(["--help"]);
+      t.expect.lines(result).toMatchSnapshot();
+    });
+    t.test("Version", t => {
+      let result = runFruits(["--version"]);
       t.expect.lines(result).toMatchSnapshot();
     });
     t.test("Suggest", t => {

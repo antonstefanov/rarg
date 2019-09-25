@@ -18,6 +18,8 @@ module RunResult: {
       Run('a)
     | /** Help was requested */
       Help(string)
+    | /** Version was requested */
+      Version(string)
     | /** Suggestions for autocompletion were requested */
       Suggest(string)
     | /** A script for autocompletion to be added to the bash config was requested */

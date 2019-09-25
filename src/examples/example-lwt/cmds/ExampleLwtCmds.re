@@ -32,7 +32,7 @@ module CmdFind = {
   };
   let run = m => handle(~patterns=getPatterns(m));
   let cmd: Cmd.t(Lwt.t(cmdResult)) =
-    Cmd.make(~name="Find", ~args, ~run, ());
+    Cmd.make(~name="Find", ~version="1.1", ~args, ~run, ());
 };
 
 module CmdCut = {
@@ -64,7 +64,7 @@ module CmdCut = {
   };
   let run = m => handle(~fruits=getFruits(m));
   let cmd: Cmd.t(Lwt.t(cmdResult)) =
-    Cmd.make(~name="Cut fruits", ~args, ~run, ());
+    Cmd.make(~name="Cut fruits", ~version="1.2", ~args, ~run, ());
 };
 
 module CmdStart = {
@@ -79,6 +79,7 @@ module CmdStart = {
   let cmd: Cmd.t(Lwt.t(cmdResult)) =
     Cmd.make(
       ~name="Start",
+      ~version="1.0",
       ~args,
       ~run,
       ~children=[("find", CmdFind.cmd), ("cut", CmdCut.cmd)],
