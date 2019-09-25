@@ -7,7 +7,6 @@ Command signature:
 
 Positionals:
   <white>patterns</white>  Patterns to find <bold><..string></bold><italic></italic>
-  Patterns to find
 
 Options:
   <white>--copy</white>  Whether to copy the results <bold>[bool]=false</bold><italic></italic>

@@ -75,7 +75,6 @@ module Positionals = {
       <Lines marginBottom=1>
         <Line> "Positionals:" </Line>
         <ArgsSignatures args=[arg] />
-        <Line indent=2> {arg.doc} </Line>
       </Lines>
     };
 };
