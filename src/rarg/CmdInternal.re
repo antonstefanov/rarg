@@ -170,19 +170,43 @@ module Action = {
     | Run
     | Help
     | Version
-    | Suggest
+    | Suggest(Seed.Process.Shell.t)
     | AutoCompleteScript
     | AddPath
     | RemovePath;
 };
 
+let getShell = ValidateArgs.One.req(~parse=Type.shell.parse);
+let getShell = m => getShell(m) |> Seed.Result.getOkExn(_);
+
+let getSuggestionsShell = (map: ArgsMap.t): option(Seed.Process.Shell.t) => {
+  switch (ArgsMap.getOpt(ArgsMap.suggestionsRequestKey, map)) {
+  | Some(suggestions) => Some(getShell(Some(suggestions)))
+  | None =>
+    switch (ArgsMap.getOpt(ArgsMap.dashKey, map)) {
+    | None => None
+    | Some(args) =>
+      switch (args) {
+      | [||] => None
+      | [|x|] => None
+      | args =>
+        if (args[Array.length(args) - 2] == ArgsMap.suggestionsRequestKey) {
+          let suggestions =
+            Seed.Arr.slice(args, ~starti=Array.length(args) - 1, ());
+          Some(getShell(Some(suggestions)));
+        } else {
+          None;
+        }
+      }
+    }
+  };
+};
 /** gets the output action for a command without following its subcommands tree */
 let getCmdAction =
     (cmd: t('a), ~argsMap: ArgsMap.t): result(Action.t, Err.t) =>
-  if (ArgsMap.hasSuggestionsRequest(argsMap)) {
-    // autocompletion
-    Ok(Action.Suggest);
-  } else {
+  switch (getSuggestionsShell(argsMap)) {
+  | Some(shell) => Ok(Action.Suggest(shell))
+  | None =>
     switch (Validate.definedArgs(cmd.args)) {
     | Error(e) => Error(ConfigError(e))
     | Ok(knownArgs) =>
@@ -208,7 +232,7 @@ let getCmdAction =
                             Error(UserError(validationErrors))
                           }
                         )
-    };
+    }
   };
 
 /** follows the sub commands tree and returns only the positionals that are not commands */

@@ -128,6 +128,8 @@ let float: t(float);
 */
 let bool: t(bool);
 
+let shell: t(Seed.Process.Shell.t);
+
 /**
 Parses [truthy]/[falsey] values like [true]/[false] [on]/[off] [yes]/[no] [y]/[n] and [1]/[0]
 */

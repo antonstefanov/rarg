@@ -26,16 +26,16 @@ describe("Rarg_ComponentsTips", t => {
         toMatchSnapshot()
     );
   });
-  t.describe("InstallScript", t => {
+  t.describe("AddPathScript", t => {
     t.test("renders install script for bash", t =>
       t.expect.string(
-        <InstallScript appName="my-app" appPath="/a/b/c" shell=Bash />,
+        <AddPathScript appName="my-app" appPath="/a/b/c" shell=Bash />,
       ).
         toMatchSnapshot()
     );
     t.test("renders install script for zsh", t =>
       t.expect.string(
-        <InstallScript appName="my-app" appPath="/a/b/c" shell=Zsh />,
+        <AddPathScript appName="my-app" appPath="/a/b/c" shell=Zsh />,
       ).
         toMatchSnapshot()
     );

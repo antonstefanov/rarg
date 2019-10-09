@@ -38,18 +38,6 @@ let hasHelp = (map: t): bool => StringMap.has(helpKey, map);
 let hasVersion = (map: t): bool => StringMap.has(versionKey, map);
 let hasAddPath = (map: t): bool => StringMap.has(addPathKey, map);
 let hasRemovePath = (map: t): bool => StringMap.has(removePathKey, map);
-let hasSuggestionsRequest = (map: t): bool =>
-  StringMap.has(suggestionsRequestKey, map)
-  || (
-    switch (getOpt(dashKey, map)) {
-    | None => false
-    | Some(args) =>
-      switch (args) {
-      | [||] => false
-      | args => args[Array.length(args) - 1] == suggestionsRequestKey
-      }
-    }
-  );
 
 let hasSuggestionsScript = (map: t): bool =>
   StringMap.has(suggestionsScriptKey, map);

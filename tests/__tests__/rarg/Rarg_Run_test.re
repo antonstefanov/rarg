@@ -3,6 +3,7 @@ open TestFramework;
 module Args = RargInternal.Args;
 module ArgsMap = RargInternal.ArgsMap;
 module Run = RargInternal.Run;
+module Type = RargInternal.Type;
 
 let run =
     (
@@ -100,8 +101,22 @@ describe("Rarg_Run", t => {
       let result = runFruits(["--version"]);
       t.expect.lines(result).toMatchSnapshot();
     });
-    t.test("Suggest", t => {
-      let result = runFruits(["-fru", ArgsMap.suggestionsRequestKey]);
+    t.test("Suggest - bash", t => {
+      let result =
+        runFruits([
+          "-fru",
+          ArgsMap.suggestionsRequestKey,
+          Type.shell.stringify(Bash),
+        ]);
+      t.expect.lines(result).toMatchSnapshot();
+    });
+    t.test("Suggest - zsh", t => {
+      let result =
+        runFruits([
+          "-fru",
+          ArgsMap.suggestionsRequestKey,
+          Type.shell.stringify(Zsh),
+        ]);
       t.expect.lines(result).toMatchSnapshot();
     });
     t.test("AutoCompleteScript - bash", t => {

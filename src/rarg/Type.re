@@ -105,6 +105,20 @@ let flag: t(bool) = {
   choices: Some(Suggestions([true, false])),
 };
 
+let shell: t(Seed.Process.Shell.t) = {
+  name: "shell",
+  parse:
+    fun
+    | "bash" => Ok(Bash)
+    | "zsh" => Ok(Zsh)
+    | s => Error(Some("Unknown shell: " ++ s)),
+  stringify:
+    fun
+    | Bash => "bash"
+    | Zsh => "zsh",
+  choices: Some(HelpAndSuggestions([Bash, Zsh])),
+};
+
 let withChoices = (t: t('a), choices: Choices.t('a)): t('a) => {
   ...t,
   choices: Some(choices),

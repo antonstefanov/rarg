@@ -60,7 +60,6 @@ module Autocomplete =
     /**
      Autocompletion templates based on yargs:
      https://github.com/yargs/yargs/blob/master/lib/completion-templates.js
-     MIT License: https://github.com/yargs/yargs/blob/master/LICENSE
     */
     // "${args[@]:1}" is used to exclude the command name from the list
     let bashTemplate = {|_rarg_{{app_name}}_completions()
@@ -71,7 +70,7 @@ module Autocomplete =
     args=("${COMP_WORDS[@]}")
 
     # ask rarg to generate completions.
-    type_list=$({{app_path}} "${args[@]:1}" --rarg-suggestions-request)
+    type_list=$({{app_path}} "${args[@]:1}" --rarg-suggestions-request bash)
 
     COMPREPLY=( $(compgen -W "${type_list}" -- ${cur_word}) )
 
@@ -88,7 +87,7 @@ complete -o default -F _rarg_{{app_name}}_completions {{app_name}}|};
 {
   local reply
   local si=$IFS
-  IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" {{app_path}} "\${words[@]:1}" --rarg-suggestions-request))
+  IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" {{app_path}} "${words[@]:1}" --rarg-suggestions-request zsh))
   IFS=$si
   _describe 'values' reply
 }

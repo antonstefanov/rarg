@@ -97,10 +97,14 @@ describe("Rarg_Suggestions", t => {
       Suggestions.getPositionalSuggestions(
         ~choices=
           Suggestions.getArgChoices(definedArgs, ~key=ArgsMap.positionalsKey),
-        ~children,
+        ~children=
+          Seed.Option.map(children, c =>
+            List.map(v => (v, "__" ++ v ++ "__"), c)
+          ),
         ~argsMap=ArgsMap.ofArray(providedArgs),
         ~currentValues,
-      );
+      )
+      |> Suggestions.values;
     };
     t.describe("test configuration testing", t => {
       t.test("throws when not positional", t => {
@@ -180,12 +184,13 @@ describe("Rarg_Suggestions", t => {
         )
       };
     };
-    let get = (definedArgs, providedArgs) =>
+    let get = (~shell=Seed.Process.Shell.Bash, definedArgs, providedArgs) =>
       Suggestions.getValuesSuggestions(
         ~definedArgs,
         ~argsMap=ArgsMap.ofArray(providedArgs),
         ~currentArg=getCurrentArg(providedArgs),
-      );
+      )
+      |> Suggestions.suggestionsForShell(shell, _);
     t.describe("test configuration testing", t => {
       t.test("throws when positional", t => {
         t.expect.fn(() => getCurrentArg([|""|])).toThrow();

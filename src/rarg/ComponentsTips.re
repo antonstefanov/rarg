@@ -34,7 +34,7 @@ module AddPathTip = {
   };
 };
 
-module InstallScript = {
+module AddPathScript = {
   let createElement =
       (
         ~appName,

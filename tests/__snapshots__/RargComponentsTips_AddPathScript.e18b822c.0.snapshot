@@ -1,4 +1,4 @@
-Rarg_ComponentsTips › InstallScript › renders install script for zsh
+Rarg_ComponentsTips › AddPathScript › renders install script for zsh
 # my-app
 alias my-app='/a/b/c'
 
@@ -9,7 +9,7 @@ _rarg_my-app_completions()
 {
   local reply
   local si=$IFS
-  IFS=$'\\n' reply=($(COMP_CWORD=\"$((CURRENT-1))\" COMP_LINE=\"$BUFFER\" COMP_POINT=\"$CURSOR\" /a/b/c \"\\${words[@]:1}\" --rarg-suggestions-request))
+  IFS=$'\\n' reply=($(COMP_CWORD=\"$((CURRENT-1))\" COMP_LINE=\"$BUFFER\" COMP_POINT=\"$CURSOR\" /a/b/c \"${words[@]:1}\" --rarg-suggestions-request zsh))
   IFS=$si
   _describe 'values' reply
 }

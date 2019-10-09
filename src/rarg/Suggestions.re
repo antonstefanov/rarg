@@ -70,7 +70,8 @@ let getValuesSuggestions =
       ~definedArgs: list((Args.t, 'a)),
       ~argsMap,
       ~currentArg: (string, array(string)),
-    ) => {
+    )
+    : list((string, string)) => {
   let suggestions = ref([]);
   let (currentArgName, currentArgValues) = currentArg;
 
@@ -81,17 +82,18 @@ let getValuesSuggestions =
         switch (arg.name) {
         | argName when argName == currentArgName =>
           if (showArgNameSuggestions(arg, ~argsMap)) {
-            suggestions := [arg.name, ...suggestions^];
+            suggestions := [(arg.name, arg.doc), ...suggestions^];
           };
           switch (
             getChoicesForSuggestions(arg.choices, ~argsMap, ~currentArg)
           ) {
           | None => ()
-          | Some(choices) => suggestions := choices @ suggestions^
+          | Some(choices) =>
+            suggestions := List.map(c => (c, ""), choices) @ suggestions^
           };
         | argName when Seed.Strings.startsWith(argName, ~start=currentArgName) =>
-          suggestions := [arg.name, ...suggestions^]
-        | _ => suggestions := [arg.name, ...suggestions^]
+          suggestions := [(arg.name, arg.doc), ...suggestions^]
+        | _ => suggestions := [(arg.name, arg.doc), ...suggestions^]
         },
       definedArgs,
     )
@@ -101,7 +103,7 @@ let getValuesSuggestions =
         switch (arg.name) {
         | argName when argName == currentArgName =>
           if (showArgNameSuggestions(arg, ~argsMap)) {
-            suggestions := [arg.name, ...suggestions^];
+            suggestions := [(arg.name, arg.doc), ...suggestions^];
           };
           switch (
             getChoicesForSuggestions(arg.choices, ~argsMap, ~currentArg)
@@ -109,11 +111,11 @@ let getValuesSuggestions =
           | None => ()
           | Some(choices) =>
             // TODO: consider arg.possibleValues
-            suggestions := choices @ suggestions^
+            suggestions := List.map(c => (c, ""), choices) @ suggestions^
           };
         | argName when Seed.Strings.startsWith(argName, ~start=currentArgName) =>
-          suggestions := [arg.name, ...suggestions^]
-        | _ => suggestions := [arg.name, ...suggestions^]
+          suggestions := [(arg.name, arg.doc), ...suggestions^]
+        | _ => suggestions := [(arg.name, arg.doc), ...suggestions^]
         },
       definedArgs,
     )
@@ -124,10 +126,11 @@ let getValuesSuggestions =
 let getPositionalSuggestions =
     (
       ~choices,
-      ~children: option(list(string)),
+      ~children: option(list((string, string))),
       ~argsMap: ArgsMap.t,
       ~currentValues,
-    ) => {
+    )
+    : list((string, string)) => {
   let suggestions =
     switch (
       getChoicesForSuggestions(
@@ -140,7 +143,8 @@ let getPositionalSuggestions =
     | Some(valueSuggestions) =>
       module S = Seed.DataStructures.StringSet;
       let currentValues = S.fromArray(currentValues);
-      List.filter(v => !S.has(v, currentValues), valueSuggestions);
+      List.filter(v => !S.has(v, currentValues), valueSuggestions)
+      |> List.map(c => (c, ""));
     };
   switch (children) {
   | None => suggestions
@@ -165,10 +169,10 @@ let getArgChoices =
 
 let getSuggestions =
     (~args: array(string), ~cmd: Cmd.t('a), ~argsMap: ArgsMap.t)
-    : list(string) => {
-  // -1 to exclude the --suggestions arg
+    : list((string, string)) => {
+  // -2 to exclude the --suggestions arg and shell
   let last =
-    Seed.Arr.slice(args, ~starti=0, ~endi=-1, ()) |> LastArg.ofArray(_);
+    Seed.Arr.slice(args, ~starti=0, ~endi=-2, ()) |> LastArg.ofArray(_);
   switch (last) {
   | Short(currentArg)
   | Long(currentArg)
@@ -178,8 +182,29 @@ let getSuggestions =
     getPositionalSuggestions(
       ~choices=getArgChoices(cmd.args, ~key),
       ~argsMap,
-      ~children=Seed.Option.map(cmd.children, ~fn=CmdInternal.Sub.keys),
       ~currentValues=values,
+      ~children=
+        Seed.Option.map(
+          cmd.children,
+          ~fn=children => {
+            let kvs = Seed.DataStructures.StringMap.entries(children);
+            List.map(
+              ((k, v: CmdInternal.t('a))) =>
+                (k, Seed.Option.getDefault(v.doc, ~default="")),
+              kvs,
+            );
+          },
+        ),
     )
+  };
+};
+
+let getValue = ((value, _)) => value;
+let values = vs => List.map(getValue, vs);
+
+let suggestionsForShell = (shell: Seed.Process.Shell.t, suggestions) => {
+  switch (shell) {
+  | Bash => List.map(((s, _)) => s, suggestions)
+  | Zsh => List.map(((s, d)) => s ++ ":" ++ d, suggestions)
   };
 };

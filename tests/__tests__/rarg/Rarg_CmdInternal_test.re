@@ -31,7 +31,7 @@ module R = {
       | Run => Run
       | Help => Help
       | Version => Version
-      | Suggest => Suggest
+      | Suggest(shell) => Suggest
       | AutoCompleteScript => AutoCompleteScript
       | AddPath => AddPath
       | RemovePath => RemovePath
@@ -416,9 +416,18 @@ describe("Rarg_CmdInternal", t =>
           let result = get(Commands.CmdStart.cmd, [||]);
           t.expect.result(result).toBeOk();
         });
+        t.test("throws when there's no shell", t => {
+          t.expect.fn(() =>
+            get(Commands.CmdStart.cmd, [|ArgsMap.suggestionsRequestKey|])
+          ).
+            toThrow()
+        });
         t.test("returns suggest when arg is present", t => {
           let ok =
-            get(Commands.CmdStart.cmd, [|ArgsMap.suggestionsRequestKey|])
+            get(
+              Commands.CmdStart.cmd,
+              [|ArgsMap.suggestionsRequestKey, T.shell.stringify(Bash)|],
+            )
             |> R.Ok.ofResult;
           t.expect.equal(ok |> R.Ok.ofCmd, R.Ok.Suggest);
         });
@@ -462,6 +471,7 @@ describe("Rarg_CmdInternal", t =>
                 ArgsMap.helpKey,
                 ArgsMap.versionKey,
                 ArgsMap.suggestionsRequestKey,
+                T.shell.stringify(Bash),
               |],
             )
             |> R.Ok.ofResult;

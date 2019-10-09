@@ -104,4 +104,22 @@ describe("Rarg_Seed_Strings", t => {
       t.expect.list(result).toEqual(['a', 'b', 'c', 'd', 'f']);
     });
   });
+  t.describe("contains", t => {
+    t.test("returns true when string is contained at the end", t => {
+      let result = Strings.contains("/bin/zsh", "zsh");
+      t.expect.bool(result).toBe(true);
+    });
+    t.test("returns true when string is contained at the start", t => {
+      let result = Strings.contains("zsh/bin/", "zsh");
+      t.expect.bool(result).toBe(true);
+    });
+    t.test("returns true when string is contained in the middle", t => {
+      let result = Strings.contains("/bin/zsh/", "zsh");
+      t.expect.bool(result).toBe(true);
+    });
+    t.test("returns false when string is not contained", t => {
+      let result = Strings.contains("/bin/sh/", "zsh");
+      t.expect.bool(result).toBe(false);
+    });
+  });
 });

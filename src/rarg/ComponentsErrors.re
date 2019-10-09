@@ -82,7 +82,8 @@ module ValidationError = {
           ~argsMap,
           ~currentArgKey=actual,
           ~currentArgValues=[||],
-        );
+        )
+        |> Suggestions.values(_);
       };
       <Lines>
         <Line>
@@ -182,6 +183,8 @@ module UnknownArgs = {
             Recommendations.get(
               firstPositional,
               ~candidates=children,
+              ~getValue=v => v,
+              ~compare=String.compare,
               ~threshold=999,
               (),
             );
@@ -254,6 +257,8 @@ module UnknownArgs = {
                   Recommendations.get(
                     argKey,
                     ~candidates=namesAndAliases,
+                    ~getValue=v => v,
+                    ~compare=String.compare,
                     (),
                   );
                 <Lines marginBottom=2>

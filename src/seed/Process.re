@@ -4,9 +4,12 @@ module Shell = {
     | Zsh;
 
   let readFromEnv = () => {
-    switch (Sys.getenv_opt("SHELL")) {
-    | Some(v) => Strings.contains(v, "zsh") ? Zsh : Bash
-    | None => Zsh
+    let isZsh = v => Strings.contains(v, "zsh") ? Some(Zsh) : None;
+    switch (Option.flatMap(Sys.getenv_opt("SHELL"), ~fn=isZsh)) {
+    | Some(shell) => shell
+    | None =>
+      Option.flatMap(Sys.getenv_opt("ZSH_NAME"), ~fn=isZsh)
+      |> Option.getDefault(_, ~default=Zsh)
     };
   };
 

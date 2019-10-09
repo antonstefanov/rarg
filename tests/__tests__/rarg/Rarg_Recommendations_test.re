@@ -20,6 +20,7 @@ describe("Rarg_Recommendations", t => {
         Recommendations.Internal.get(
           "a",
           ~candidates=["zxc", "a", "a", "ab", "abc", "abcd", "abcde"],
+          ~getValue=v => v,
           (),
         ),
       ).
@@ -33,14 +34,17 @@ describe("Rarg_Recommendations", t => {
     );
     t.test("sorts first by threshold and then alphabetically", t =>
       t.expect.list(
-        Recommendations.Internal.sort([
-          ("zyx", 1),
-          ("zyx", 4),
-          ("abb", 2),
-          ("aaa", 2),
-          ("abc", 5),
-          ("abb", 5),
-        ]),
+        Recommendations.Internal.sort(
+          ~compare=String.compare,
+          [
+            ("zyx", 1),
+            ("zyx", 4),
+            ("abb", 2),
+            ("aaa", 2),
+            ("abc", 5),
+            ("abb", 5),
+          ],
+        ),
       ).
         toEqual([
         ("zyx", 1),
@@ -61,6 +65,8 @@ describe("Rarg_Recommendations", t => {
           "a",
           ~top=99,
           ~candidates=["a", "ab", "abc", "abcd", "abcde"],
+          ~getValue=v => v,
+          ~compare=String.compare,
           (),
         ),
       ).
@@ -77,6 +83,8 @@ describe("Rarg_Recommendations", t => {
           "a",
           ~top=3,
           ~candidates=["a", "ab", "abc", "abcd", "abcde"],
+          ~getValue=v => v,
+          ~compare=String.compare,
           (),
         ),
       ).
@@ -89,7 +97,13 @@ describe("Rarg_Recommendations", t => {
 
     t.test("includes both recommendations", t =>
       t.expect.list(
-        Recommendations.get("potat", ~candidates=["potato", "potatoes"], ()),
+        Recommendations.get(
+          "potat",
+          ~candidates=["potato", "potatoes"],
+          ~getValue=v => v,
+          ~compare=String.compare,
+          (),
+        ),
       ).
         toEqual([
         "potato",

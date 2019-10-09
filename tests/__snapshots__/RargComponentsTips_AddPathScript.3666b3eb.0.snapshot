@@ -1,4 +1,4 @@
-Rarg_ComponentsTips › InstallScript › renders install script for bash
+Rarg_ComponentsTips › AddPathScript › renders install script for bash
 # my-app
 alias my-app='/a/b/c'
 
@@ -13,7 +13,7 @@ _rarg_my-app_completions()
     args=(\"${COMP_WORDS[@]}\")
 
     # ask rarg to generate completions.
-    type_list=$(/a/b/c \"${args[@]:1}\" --rarg-suggestions-request)
+    type_list=$(/a/b/c \"${args[@]:1}\" --rarg-suggestions-request bash)
 
     COMPREPLY=( $(compgen -W \"${type_list}\" -- ${cur_word}) )
 

@@ -81,18 +81,15 @@ let simplify =
     | Run => Ok(RunResult.Run(cmd.run(argsMap)))
     | Help => Ok(RunResult.Help(<ComponentsHelp.Help cmd appName />))
     | Version => Ok(Version(cmd.version))
-    | Suggest =>
-      Ok(
-        RunResult.Suggest(
-          Suggestions.getSuggestions(~args, ~cmd, ~argsMap)
-          |> String.concat("\n", _),
-        ),
-      )
+    | Suggest(shell) =>
+      let suggestions = Suggestions.getSuggestions(~args, ~cmd, ~argsMap);
+      let lines = Suggestions.suggestionsForShell(shell, suggestions);
+      Ok(RunResult.Suggest(String.concat("\n", lines)));
     | AddPath =>
       Ok(
         RunResult.AddPath(
           <ComponentsTips.AddPathTip appPath ?shell ?platform />,
-          <ComponentsTips.InstallScript appName appPath ?shell />,
+          <ComponentsTips.AddPathScript appName appPath ?shell />,
         ),
       )
     | RemovePath =>

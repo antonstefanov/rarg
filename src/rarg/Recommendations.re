@@ -40,50 +40,68 @@ let levenshteinDistance = (s, t) => {
 module S = Seed.DataStructures.StringMap;
 
 module Internal = {
-  let get = (str, ~threshold=3, ~candidates, ()): list((string, int)) => {
-    let add = (map, ~name, ~distance) => {
-      switch (S.getOpt(name, map)) {
-      | None => S.set(name, distance, map)
-      | Some(existingDistance) when distance < existingDistance =>
-        S.set(name, distance, map)
+  let get =
+      (str, ~threshold=3, ~candidates: list('a), ~getValue: 'a => string, ())
+      : list(('a, int)) => {
+    let add = (map, ~candidate: 'a, ~value: string, ~distance: int) => {
+      switch (S.getOpt(value, map)) {
+      | None => S.set(value, (distance, candidate), map)
+      | Some((existingDistance, c)) when distance < existingDistance =>
+        S.set(value, (distance, candidate), map)
       | Some(_) => map
       };
     };
-    List.fold_left(
-      (acc, name) =>
-        switch (levenshteinDistance(str, name)) {
-        | distance when distance <= threshold => add(acc, ~name, ~distance)
-        | _ => acc
+
+    let entries =
+      List.fold_left(
+        (acc, candidate) => {
+          let value = getValue(candidate);
+          switch (levenshteinDistance(str, value)) {
+          | distance when distance <= threshold =>
+            add(acc, ~candidate, ~value, ~distance)
+          | _ => acc
+          };
         },
-      S.empty,
-      candidates,
-    )
-    |> S.entries(_);
+        S.empty,
+        candidates,
+      )
+      |> S.entries(_);
+    List.map(((_, (d, v))) => (v, d), entries);
   };
-  let sort = (recommendations: list((string, int))): list((string, int)) =>
+  let sort = (~compare, recommendations: list(('a, int))): list(('a, int)) =>
     List.sort(
-      ((name1, distance1), (name2, distance2)) =>
+      ((v1, distance1), (v2, distance2)) =>
         switch (distance1 - distance2) {
-        | 0 => String.compare(name1, name2)
+        | 0 => compare(v1, v2)
         | d => d
         },
       recommendations,
     );
 };
-
-let get = (str, ~threshold=3, ~top=5, ~candidates, ()): list(string) => {
-  let rec aux = (recommendations, ~maxi, ~acc, ~i) =>
+// String.compare(name1, name2)
+let get =
+    (
+      str,
+      ~threshold=3,
+      ~top=5,
+      ~candidates: list('a),
+      ~compare: ('a, 'a) => int,
+      ~getValue: 'a => string,
+      (),
+    )
+    : list('a) => {
+  let rec getTop = (recommendations, ~maxi, ~acc, ~i) =>
     i >= maxi
       ? acc
       : (
         switch (recommendations) {
         | [] => acc
-        | [(x, _), ...xs] => aux(xs, ~maxi, ~acc=[x, ...acc], ~i=i + 1)
+        | [(x, _), ...xs] => getTop(xs, ~maxi, ~acc=[x, ...acc], ~i=i + 1)
         }
       );
-  Internal.get(str, ~threshold, ~candidates, ())
-  |> Internal.sort(_)
-  |> aux(_, ~maxi=top, ~acc=[], ~i=0)
+  Internal.get(str, ~threshold, ~candidates, ~getValue, ())
+  |> Internal.sort(_, ~compare)
+  |> getTop(_, ~maxi=top, ~acc=[], ~i=0)
   |> List.rev(_);
 };
 
@@ -94,7 +112,7 @@ let forArgValues =
       ~currentArgKey: string,
       ~currentArgValues: array(string),
     )
-    : list(string) => {
+    : list((string, string)) => {
   switch (
     Suggestions.getChoicesForSuggestions(
       arg.choices,
@@ -104,7 +122,14 @@ let forArgValues =
   ) {
   | None => []
   | Some(suggestions) =>
-    get(currentArgKey, ~threshold=4, ~candidates=suggestions, ())
+    get(
+      currentArgKey,
+      ~threshold=4,
+      ~candidates=List.map(c => (c, ""), suggestions),
+      ~getValue=Suggestions.getValue,
+      ~compare=((name1, _), (name2, _)) => String.compare(name1, name2),
+      (),
+    )
   };
 };
 
@@ -120,5 +145,12 @@ let forArgName =
       ~argsMap,
       ~currentArg=(current, values),
     );
-  get(current, ~threshold=3, ~candidates=suggestions, ());
+  get(
+    current,
+    ~threshold=3,
+    ~candidates=suggestions,
+    ~getValue=Suggestions.getValue,
+    ~compare=((name1, _), (name2, _)) => String.compare(name1, name2),
+    (),
+  );
 };
