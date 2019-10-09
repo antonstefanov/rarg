@@ -4,7 +4,12 @@ module Args = RargInternal.Args;
 module ArgsMap = RargInternal.ArgsMap;
 module Run = RargInternal.Run;
 
-let run = (cmd: RargInternal.Cmd.t('a), args: list(string)) => {
+let run =
+    (
+      ~shell: Seed.Process.Shell.t,
+      cmd: RargInternal.Cmd.t('a),
+      args: list(string),
+    ) => {
   let argsArr = Array.of_list([cmd.name, ...args]);
   let {args, appName, appPath, argsMap}: RargInternal.Argv.t =
     RargInternal.Argv.make(argsArr);
@@ -14,7 +19,7 @@ let run = (cmd: RargInternal.Cmd.t('a), args: list(string)) => {
       ~args,
       ~appName,
       ~appPath,
-      ~zsh=false,
+      ~shell,
       ~platform=Darwin,
       (),
     );
@@ -44,7 +49,9 @@ let run = (cmd: RargInternal.Cmd.t('a), args: list(string)) => {
   };
 };
 let runFruits = (args: list(string)) =>
-  run(Rarg_FakeCommands.CmdFruits.cmd, args);
+  run(~shell=Bash, Rarg_FakeCommands.CmdFruits.cmd, args);
+let runFruitsZsh = (args: list(string)) =>
+  run(~shell=Zsh, Rarg_FakeCommands.CmdFruits.cmd, args);
 let runDuplicateArg = (providedArgs: list(string)) => {
   let cmd = Rarg_FakeCommands.CmdFruits.cmd;
   let args = cmd.args;
@@ -63,7 +70,7 @@ let runDuplicateArg = (providedArgs: list(string)) => {
       Rarg.Type.string,
     );
   let duplicateArgCmd = {...cmd, args};
-  run(duplicateArgCmd, providedArgs);
+  run(~shell=Bash, duplicateArgCmd, providedArgs);
 };
 let runInvalidArgName = (providedArgs: list(string)) => {
   let cmd = Rarg_FakeCommands.CmdFruits.cmd;
@@ -76,7 +83,7 @@ let runInvalidArgName = (providedArgs: list(string)) => {
       Rarg.Type.string,
     );
   let invalidArgNameCmd = {...cmd, args};
-  run(invalidArgNameCmd, providedArgs);
+  run(~shell=Bash, invalidArgNameCmd, providedArgs);
 };
 
 describe("Rarg_Run", t => {
@@ -97,8 +104,12 @@ describe("Rarg_Run", t => {
       let result = runFruits(["-fru", ArgsMap.suggestionsRequestKey]);
       t.expect.lines(result).toMatchSnapshot();
     });
-    t.test("AutoCompleteScript", t => {
+    t.test("AutoCompleteScript - bash", t => {
       let result = runFruits([ArgsMap.suggestionsScriptKey]);
+      t.expect.lines(result).toMatchSnapshot();
+    });
+    t.test("AutoCompleteScript - zsh", t => {
+      let result = runFruitsZsh([ArgsMap.suggestionsScriptKey]);
       t.expect.lines(result).toMatchSnapshot();
     });
     t.test("AddPath", t => {

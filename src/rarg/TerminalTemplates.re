@@ -7,17 +7,12 @@ module type TipTemplateConfig = {
 let installTip =
     (
       ~appPath,
-      ~zsh: option(bool)=?,
+      ~shell: option(Seed.Process.Shell.t),
       ~platform: option(Seed.Os.Platform.t)=?,
       (),
     ) => {
-  let isZsh = Seed.Option.getDefault(zsh, ~default=Seed.Process.isZshShell());
-  let currentPlatform =
-    Seed.Option.getDefault(platform, ~default=Seed.Os.Platform.current());
   let bashLocation =
-    isZsh
-      ? Seed.Os.Zshrc.location(currentPlatform)
-      : Seed.Os.Bashrc.location(currentPlatform);
+    Seed.Process.Shell.getConfigLocation(~shell?, ~platform?, ());
   // {{app_path}} --rarg-add-path >> {{bashrc_location}}
   String.concat(" ", [appPath, ArgsMap.addPathKey, ">>", bashLocation]);
 };
@@ -41,13 +36,21 @@ module PathTemplate = (Templates: PathTemplateConfig) => {
   let wrap = template =>
     String.concat("\n", [beginTemplate, doNotEdit, template, endTemplate]);
 
-  let replace = (~zsh: option(bool)=?, ~appName, ~appPath, ()) => {
-    Seed.Option.getDefault(zsh, ~default=Seed.Process.isZshShell())
-      ? Templates.zshTemplate
-      : Templates.bashTemplate
-        |> wrap(_)
-        |> replaceAppName(_, ~appName)
-        |> replaceAppPath(_, ~appPath);
+  let replace =
+      (~shell: option(Seed.Process.Shell.t)=?, ~appName, ~appPath, ()) => {
+    let template =
+      switch (
+        Seed.Option.getDefault(
+          shell,
+          ~default=Seed.Process.Shell.readFromEnv(),
+        )
+      ) {
+      | Bash => Templates.bashTemplate
+      | Zsh => Templates.zshTemplate
+      };
+    wrap(template)
+    |> replaceAppName(_, ~appName)
+    |> replaceAppPath(_, ~appPath);
   };
 };
 

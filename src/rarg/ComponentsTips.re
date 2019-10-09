@@ -4,30 +4,24 @@ module AddPathTip = {
   let installTip =
       (
         ~appPath,
-        ~zsh: option(bool)=?,
+        ~shell: option(Seed.Process.Shell.t),
         ~platform: option(Seed.Os.Platform.t)=?,
         (),
       ) => {
-    let isZsh =
-      Seed.Option.getDefault(zsh, ~default=Seed.Process.isZshShell());
-    let currentPlatform =
-      Seed.Option.getDefault(platform, ~default=Seed.Os.Platform.current());
     let bashLocation =
-      isZsh
-        ? Seed.Os.Zshrc.location(currentPlatform)
-        : Seed.Os.Bashrc.location(currentPlatform);
+      Seed.Process.Shell.getConfigLocation(~shell?, ~platform?, ());
     // {{app_path}} --rarg-add-path >> {{bashrc_location}}
     String.concat(" ", [appPath, ArgsMap.addPathKey, ">>", bashLocation]);
   };
   let createElement =
       (
         ~appPath,
-        ~zsh: option(bool)=?,
+        ~shell: option(Seed.Process.Shell.t)=?,
         ~platform: option(Seed.Os.Platform.t)=?,
         ~children as _,
         (),
       ) => {
-    let tip = installTip(~appPath, ~zsh?, ~platform?, ());
+    let tip = installTip(~appPath, ~shell, ~platform?, ());
     <Lines>
       <Line>
         <Span color=Cyan> "To append to your bash config run:" </Span>
@@ -42,7 +36,13 @@ module AddPathTip = {
 
 module InstallScript = {
   let createElement =
-      (~appName, ~appPath, ~zsh: option(bool)=?, ~children as _, ()) => {
+      (
+        ~appName,
+        ~appPath,
+        ~shell: option(Seed.Process.Shell.t)=?,
+        ~children as _,
+        (),
+      ) => {
     let appAlias =
       String.concat("", ["alias ", appName, "=", "'", appPath, "'"]);
 
@@ -51,7 +51,12 @@ module InstallScript = {
       <Line> appAlias </Line>
       <Line> "" </Line>
       <Line>
-        {TerminalTemplates.Autocomplete.replace(~appName, ~appPath, ~zsh?, ())}
+        {TerminalTemplates.Autocomplete.replace(
+           ~appName,
+           ~appPath,
+           ~shell?,
+           (),
+         )}
       </Line>
     </Lines>;
   };

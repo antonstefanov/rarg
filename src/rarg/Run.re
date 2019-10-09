@@ -39,7 +39,7 @@ module RunResult = {
 let simplify =
     (
       ~runAction: runAction('a),
-      ~zsh: option(bool)=?,
+      ~shell: option(Seed.Process.Shell.t)=?,
       ~platform: option(Seed.Os.Platform.t)=?,
       ~args: array(string),
       ~appName: string,
@@ -91,8 +91,8 @@ let simplify =
     | AddPath =>
       Ok(
         RunResult.AddPath(
-          <ComponentsTips.AddPathTip appPath ?zsh ?platform />,
-          <ComponentsTips.InstallScript appName appPath ?zsh />,
+          <ComponentsTips.AddPathTip appPath ?shell ?platform />,
+          <ComponentsTips.InstallScript appName appPath ?shell />,
         ),
       )
     | RemovePath =>
@@ -104,7 +104,12 @@ let simplify =
     | AutoCompleteScript =>
       Ok(
         RunResult.AutoCompleteScript(
-          TerminalTemplates.Autocomplete.replace(~appName, ~appPath, ()),
+          TerminalTemplates.Autocomplete.replace(
+            ~appName,
+            ~appPath,
+            ~shell?,
+            (),
+          ),
         ),
       )
     }

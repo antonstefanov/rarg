@@ -30,29 +30,3 @@ module Platform = {
     };
   };
 };
-
-module Bashrc = {
-  let location =
-    Platform.(
-      fun
-      | Darwin => "~/.bash_profile"
-      | Linux
-      | Unix
-      | Unknown
-      | Cygwin => "~/.bashrc"
-      | Windows => failwith("Windows is not supported")
-    );
-};
-
-module Zshrc = {
-  let location =
-    Platform.(
-      fun
-      | Darwin => "~/.zsh_profile"
-      | Linux
-      | Unix
-      | Unknown
-      | Cygwin => "~/.zshrc"
-      | Windows => failwith("Windows is not supported")
-    );
-};

@@ -52,7 +52,7 @@ Simplifies a run action by returning the concrete strings to be printed for help
 let simplify:
   (
     ~runAction: runAction('a),
-    ~zsh: bool=?,
+    ~shell: Seed.Process.Shell.t=?,
     ~platform: Seed.Os.Platform.t=?,
     ~args: array(string),
     ~appName: string,
