@@ -9,7 +9,7 @@ module Shell = {
     | Some(shell) => shell
     | None =>
       Option.flatMap(Sys.getenv_opt("ZSH_NAME"), ~fn=isZsh)
-      |> Option.getDefault(_, ~default=Zsh)
+      |> Option.getDefault(_, ~default=Bash)
     };
   };
 
