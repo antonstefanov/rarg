@@ -1,4 +1,4 @@
 Rarg_ComponentsTips › AddPathTip › shows a tip for mac zsh
-<cyan>To append to your bash config run:</cyan>
+<cyan>To append to your shell config run:</cyan>
 <white>/a/b/c --rarg-add-path >> ~/.zshrc</white>
 <cyan>Afterwards restart your terminal</cyan>

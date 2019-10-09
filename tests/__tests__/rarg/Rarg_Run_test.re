@@ -34,7 +34,11 @@ let run =
          | Version(version) => ["Version", version]
          | Suggest(suggestions) => ["Suggest", suggestions]
          // autocomplete script depends on environment
-         | AutoCompleteScript(script) => ["AutoCompleteScript", script]
+         | AutoCompleteScript(tip, script) => [
+             "AutoCompleteScript",
+             tip,
+             script,
+           ]
          | AddPath(tip, script) => ["AddPath", tip, script]
          | RemovePath => ["RemovePath"]
          },

@@ -125,8 +125,8 @@ let main = {
 
 - `--help` - display command help
 - `--version` - display command version
-- `--rarg-suggestions-script` - displays a script with instsructions how to install it to enable autocompletion
-- `--rarg-add-path` - displays a script with instructions how to add the app executable to the user's path
+- `--rarg-suggestions-script` - displays a script with instsructions how to install it to enable shell autocompletions
+- `--rarg-add-path` - displays a script with instructions how to add the app executable to the user's path (helpful during development)
 
 ## Examples
 

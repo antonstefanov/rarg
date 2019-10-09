@@ -25,6 +25,7 @@ module RunResult: {
     | /** A script for autocompletion to be added to the bash config was requested */
       AutoCompleteScript(
         string,
+        string,
       )
     | /** A script for installation to be added to the bash config was requested */
       AddPath(

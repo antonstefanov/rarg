@@ -24,7 +24,7 @@ module RunResult = {
     | Help(string)
     | Version(string)
     | Suggest(string)
-    | AutoCompleteScript(string)
+    | AutoCompleteScript(string, string)
     | AddPath(string, string)
     | RemovePath;
   type err =
@@ -101,12 +101,8 @@ let simplify =
     | AutoCompleteScript =>
       Ok(
         RunResult.AutoCompleteScript(
-          TerminalTemplates.Autocomplete.replace(
-            ~appName,
-            ~appPath,
-            ~shell?,
-            (),
-          ),
+          <ComponentsTips.AutocompleteTip appName ?shell ?platform />,
+          <ComponentsTips.AutocompleteScript appName appPath ?shell />,
         ),
       )
     }
@@ -161,12 +157,12 @@ let autorun =
     | Version(version) =>
       print_endline(version);
       Ok(Handled);
-    | Suggest(str)
-    | AutoCompleteScript(str) =>
+    | Suggest(str) =>
       print_endline(str);
       Ok(Handled);
+    | AutoCompleteScript(instruction, script)
     | AddPath(instruction, script) =>
-      // use stdout to more easily support >> ~/.bash_profile
+      // use stdout to more easily support >> ~/.zshrc
       prerr_endline(instruction);
       print_endline(script);
       Ok(Handled);

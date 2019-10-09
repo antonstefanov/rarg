@@ -11,10 +11,10 @@ let installTip =
       ~platform: option(Seed.Os.Platform.t)=?,
       (),
     ) => {
-  let bashLocation =
+  let shellLocation =
     Seed.Process.Shell.getConfigLocation(~shell?, ~platform?, ());
   // {{app_path}} --rarg-add-path >> {{bashrc_location}}
-  String.concat(" ", [appPath, ArgsMap.addPathKey, ">>", bashLocation]);
+  String.concat(" ", [appPath, ArgsMap.addPathKey, ">>", shellLocation]);
 };
 
 module type PathTemplateConfig = {
