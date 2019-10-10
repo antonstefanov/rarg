@@ -3,14 +3,34 @@ module Shell = {
     | Bash
     | Zsh;
 
-  let readFromEnv = () => {
-    let isZsh = v => Strings.contains(v, "zsh") ? Some(Zsh) : None;
-    switch (Option.flatMap(Sys.getenv_opt("SHELL"), ~fn=isZsh)) {
-    | Some(shell) => shell
-    | None =>
-      Option.flatMap(Sys.getenv_opt("ZSH_NAME"), ~fn=isZsh)
-      |> Option.getDefault(_, ~default=Bash)
+  let readOne = (cmd): option(string) => {
+    let ic = Unix.open_process_in(cmd);
+    try({
+      let line = input_line(ic);
+      let _ = Unix.close_process_in(ic);
+      Some(line);
+    }) {
+    | e =>
+      close_in_noerr(ic);
+      None;
     };
+  };
+  let isZsh = v => Strings.contains(v, "zsh") ? Some(Zsh) : None;
+  let readFromEnv = () => {
+    let pid = string_of_int(Unix.getppid());
+    let proc = readOne("ps -p " ++ pid ++ " -ocomm=");
+    // currently esy overrides the shell environment with
+    // env -i /bin/bash --norc --noprofile
+    // and the process env is different in dev and release
+    // hence the many checks:
+    Option.flatMap(proc, ~fn=isZsh)
+    |> Option.getDefaultLazy(_, ~default=() => {
+         Option.flatMap(Sys.getenv_opt("SHELL"), ~fn=isZsh)
+         |> Option.getDefaultLazy(_, ~default=() => {
+              Option.flatMap(Sys.getenv_opt("ZSH_NAME"), ~fn=isZsh)
+              |> Option.getDefault(_, ~default=Bash)
+            })
+       });
   };
 
   module Bashrc = {
@@ -41,7 +61,7 @@ module Shell = {
 
   let getConfigLocation = (~shell=?, ~platform=?, ()) => {
     let p = Option.getDefault(platform, ~default=Os.Platform.current());
-    switch (Option.getDefault(shell, ~default=readFromEnv())) {
+    switch (Option.getDefaultLazy(shell, ~default=() => readFromEnv())) {
     | Bash => Bashrc.location(p)
     | Zsh => Zshrc.location(p)
     };

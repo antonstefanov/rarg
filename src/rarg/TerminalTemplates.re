@@ -40,9 +40,8 @@ module PathTemplate = (Templates: PathTemplateConfig) => {
       (~shell: option(Seed.Process.Shell.t)=?, ~appName, ~appPath, ()) => {
     let template =
       switch (
-        Seed.Option.getDefault(
-          shell,
-          ~default=Seed.Process.Shell.readFromEnv(),
+        Seed.Option.getDefaultLazy(shell, ~default=() =>
+          Seed.Process.Shell.readFromEnv()
         )
       ) {
       | Bash => Templates.bashTemplate
