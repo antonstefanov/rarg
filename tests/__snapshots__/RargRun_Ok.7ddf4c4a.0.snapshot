@@ -15,7 +15,7 @@ _rarg_fruits_completions()
     args=(\"${COMP_WORDS[@]}\")
 
     # ask rarg to generate completions.
-    type_list=$(Fruits \"${args[@]:1}\" --rarg-suggestions-request bash)
+    type_list=$(fruits \"${args[@]:1}\" --rarg-suggestions-request bash)
 
     COMPREPLY=( $(compgen -W \"${type_list}\" -- ${cur_word}) )
 

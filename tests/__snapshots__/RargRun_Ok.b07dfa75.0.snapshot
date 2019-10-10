@@ -11,7 +11,7 @@ _rarg_fruits_completions()
 {
   local reply
   local si=$IFS
-  IFS=$'\\n' reply=($(COMP_CWORD=\"$((CURRENT-1))\" COMP_LINE=\"$BUFFER\" COMP_POINT=\"$CURSOR\" Fruits \"${words[@]:1}\" --rarg-suggestions-request zsh))
+  IFS=$'\\n' reply=($(COMP_CWORD=\"$((CURRENT-1))\" COMP_LINE=\"$BUFFER\" COMP_POINT=\"$CURSOR\" fruits \"${words[@]:1}\" --rarg-suggestions-request zsh))
   IFS=$si
   _describe 'values' reply
 }

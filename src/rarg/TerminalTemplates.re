@@ -69,7 +69,7 @@ module Autocomplete =
     args=("${COMP_WORDS[@]}")
 
     # ask rarg to generate completions.
-    type_list=$({{app_path}} "${args[@]:1}" --rarg-suggestions-request bash)
+    type_list=$({{app_name}} "${args[@]:1}" --rarg-suggestions-request bash)
 
     COMPREPLY=( $(compgen -W "${type_list}" -- ${cur_word}) )
 
@@ -86,7 +86,7 @@ complete -o default -F _rarg_{{app_name}}_completions {{app_name}}|};
 {
   local reply
   local si=$IFS
-  IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" {{app_path}} "${words[@]:1}" --rarg-suggestions-request zsh))
+  IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" {{app_name}} "${words[@]:1}" --rarg-suggestions-request zsh))
   IFS=$si
   _describe 'values' reply
 }
