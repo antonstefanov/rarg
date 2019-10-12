@@ -121,9 +121,29 @@ module CmdFind = {
       ~doc="Whether to copy the results",
       T.bool,
     );
+  let (args, getBranch) =
+    Args.One.opt(~args, ~name="--branch", ~doc="Branch to find", T.branch);
 
-  let handle = (~patterns: list(string), ~copy: bool) => ();
-  let run = m => handle(~patterns=getPatterns(m), ~copy=getCopy(m));
+  let handle =
+      (~patterns: list(string), ~branch: option(string), ~copy: bool) => {
+    print_endline("______________________");
+    print_endline("patterns");
+    print_endline(patterns |> String.concat(" | ", _));
+    print_endline("______________________");
+    print_endline("branch");
+    print_endline(branch |> Seed.Option.getDefault(_, ~default="__None__"));
+    print_endline("______________________");
+    print_endline("copy");
+    print_endline(copy |> string_of_bool);
+    print_endline("______________________");
+  };
+  let run = m =>
+    handle(
+      ~patterns=getPatterns(m),
+      ~branch=getBranch(m),
+      ~copy=getCopy(m),
+    );
+
   let cmd: Cmd.t(unit) =
     Cmd.make(~name="Find", ~version="1.3", ~args, ~run, ());
 };

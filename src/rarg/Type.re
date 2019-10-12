@@ -124,3 +124,18 @@ let withChoices = (t: t('a), choices: Choices.t('a)): t('a) => {
   choices: Some(choices),
 };
 let with_choices = withChoices;
+
+let branch =
+  make(
+    ~name="branch",
+    ~parse=x => Ok(x),
+    ~stringify=x => x,
+    ~choices=
+      Dynamic(
+        (argsMap, (key, values)) =>
+          Seed.Chan.readMany(
+            {|git for-each-ref --format="${pfx//\%/%%}%(refname:strip=2)$sfx"|},
+          ),
+      ),
+    (),
+  );

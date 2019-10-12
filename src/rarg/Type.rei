@@ -128,9 +128,17 @@ let float: t(float);
 */
 let bool: t(bool);
 
+/**
+Parses [shell] values like [bash] or [zsh]
+*/
 let shell: t(Seed.Process.Shell.t);
 
 /**
 Parses [truthy]/[falsey] values like [true]/[false] [on]/[off] [yes]/[no] [y]/[n] and [1]/[0]
 */
 let flag: t(bool);
+
+/**
+Autosuggests git branches (without validating them)
+*/
+let branch: t(string);
