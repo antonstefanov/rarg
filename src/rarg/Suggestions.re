@@ -73,53 +73,26 @@ let getValuesSuggestions =
     )
     : list((string, string)) => {
   let suggestions = ref([]);
-  let (currentArgName, currentArgValues) = currentArg;
+  let (currentArgName, _currentArgValues) = currentArg;
+  List.iter(
+    ((arg, _): (Args.t, 'a)) =>
+      switch (arg.name) {
+      | argName when argName == currentArgName =>
+        if (showArgNameSuggestions(arg, ~argsMap)) {
+          suggestions := [(arg.name, arg.doc), ...suggestions^];
+        };
+        switch (getChoicesForSuggestions(arg.choices, ~argsMap, ~currentArg)) {
+        | None => ()
+        | Some(choices) =>
+          suggestions := List.map(c => (c, arg.doc), choices) @ suggestions^
+        };
+      | _ =>
+        arg.name == ArgsMap.positionalsKey
+          ? () : suggestions := [(arg.name, arg.doc), ...suggestions^]
+      },
+    definedArgs,
+  );
 
-  switch (currentArgValues) {
-  | [||] =>
-    List.iter(
-      ((arg, _): (Args.t, 'a)) =>
-        switch (arg.name) {
-        | argName when argName == currentArgName =>
-          if (showArgNameSuggestions(arg, ~argsMap)) {
-            suggestions := [(arg.name, arg.doc), ...suggestions^];
-          };
-          switch (
-            getChoicesForSuggestions(arg.choices, ~argsMap, ~currentArg)
-          ) {
-          | None => ()
-          | Some(choices) =>
-            suggestions := List.map(c => (c, ""), choices) @ suggestions^
-          };
-        | argName when Seed.Strings.startsWith(argName, ~start=currentArgName) =>
-          suggestions := [(arg.name, arg.doc), ...suggestions^]
-        | _ => suggestions := [(arg.name, arg.doc), ...suggestions^]
-        },
-      definedArgs,
-    )
-  | _ =>
-    List.iter(
-      ((arg, _): (Args.t, 'a)) =>
-        switch (arg.name) {
-        | argName when argName == currentArgName =>
-          if (showArgNameSuggestions(arg, ~argsMap)) {
-            suggestions := [(arg.name, arg.doc), ...suggestions^];
-          };
-          switch (
-            getChoicesForSuggestions(arg.choices, ~argsMap, ~currentArg)
-          ) {
-          | None => ()
-          | Some(choices) =>
-            // TODO: consider arg.possibleValues
-            suggestions := List.map(c => (c, ""), choices) @ suggestions^
-          };
-        | argName when Seed.Strings.startsWith(argName, ~start=currentArgName) =>
-          suggestions := [(arg.name, arg.doc), ...suggestions^]
-        | _ => suggestions := [(arg.name, arg.doc), ...suggestions^]
-        },
-      definedArgs,
-    )
-  };
   suggestions^;
 };
 
@@ -156,15 +129,19 @@ let getPositionalSuggestions =
 
 let getArgChoices =
     (args: list((Args.t, 'a)), ~key): option(Type.Choices.t(string)) =>
-  switch (
-    List.find_opt(
-      ((arg, _): (Args.t, 'a)) =>
-        arg.name == key || Seed.Option.eq(arg.alias, ~v=key),
-      args,
-    )
-  ) {
-  | None => None
-  | Some((arg, _)) => arg.choices
+  switch (key) {
+  | "" => None
+  | _ =>
+    switch (
+      List.find_opt(
+        ((arg, _): (Args.t, 'a)) =>
+          arg.name == key || Seed.Option.eq(arg.alias, ~v=key),
+        args,
+      )
+    ) {
+    | None => None
+    | Some((arg, _)) => arg.choices
+    }
   };
 
 let getSuggestions =

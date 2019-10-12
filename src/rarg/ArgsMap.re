@@ -53,8 +53,8 @@ let deletePositionals = (map: t): t => StringMap.delete(positionalsKey, map);
 
 let getArgType = (str: string): argType => {
   switch (String.length(str)) {
-  | 0
-  | 1 => Value(str)
+  | 0 => Value(str)
+  | 1 => str.[0] == '-' ? Short("-") : Value(str)
   | len =>
     switch (str.[0], str.[1]) {
     | ('-', '-') =>

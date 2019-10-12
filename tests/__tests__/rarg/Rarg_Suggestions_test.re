@@ -25,8 +25,8 @@ describe("Rarg_Suggestions", t => {
       t.test("is positional when empty", t =>
         t.expect.equal(last([|""|]), Positionals)
       );
-      t.test("is positional when a single dash", t =>
-        t.expect.equal(last([|"-"|]), Positionals)
+      t.test("is short when a single dash", t =>
+        t.expect.equal(last([|"-"|]), Short)
       );
       t.test("is dash when 2 dashes", t =>
         t.expect.equal(last([|"--"|]), Dash)
@@ -108,36 +108,31 @@ describe("Rarg_Suggestions", t => {
     };
     t.describe("test configuration testing", t => {
       t.test("throws when not positional", t => {
+        t.expect.fn(() => getCurrentArg([|"-"|])).toThrow();
         t.expect.fn(() => getCurrentArg([|"--"|])).toThrow();
         t.expect.fn(() => getCurrentArg([|"-a"|])).toThrow();
         t.expect.fn(() => getCurrentArg([|"--a"|])).toThrow();
       });
       t.test("does not throw when positional", t => {
-        t.expect.fn(() => getCurrentArg([|"-"|])).not.toThrow();
         t.expect.fn(() => getCurrentArg([|"abc"|])).not.toThrow();
         t.expect.fn(() => getCurrentArg([|"a b c"|])).not.toThrow();
       });
     });
-    t.test("is empty when no choices and no sub commands", t => {
-      let (args, _) = P.One.req(~args=[], ~doc="pos", T.string);
-      let result = get(args, None, [|"-"|]);
-      t.expect.list(result).toEqual([]);
-    });
     t.test("returns subcommands when no choices", t => {
       let (args, _) = P.One.req(~args=[], ~doc="pos", T.string);
-      let result = get(args, Some(["b", "a", "c"]), [|"-"|]);
+      let result = get(args, Some(["b", "a", "c"]), [|"zz"|]);
       t.expect.list(result).toEqual(["b", "a", "c"]);
     });
     t.test("returns choices when no subcommands", t => {
       let parser = T.(withChoices(string, Suggestions(["b", "a", "c"])));
       let (args, _) = P.One.req(~args=[], ~doc="pos", parser);
-      let result = get(args, None, [|"-"|]);
+      let result = get(args, None, [|"zz"|]);
       t.expect.list(result).toEqual(["b", "a", "c"]);
     });
     t.test("returns choices and subcommands when both are present", t => {
       let parser = T.(withChoices(string, Suggestions(["b", "a", "c"])));
       let (args, _) = P.One.req(~args=[], ~doc="pos", parser);
-      let result = get(args, Some(["y", "x", "z"]), [|"-"|]);
+      let result = get(args, Some(["y", "x", "z"]), [|"zz"|]);
       t.expect.list(result).toEqual(["y", "x", "z", "b", "a", "c"]);
     });
     t.test("includes all choices when word is started", t => {
@@ -193,17 +188,29 @@ describe("Rarg_Suggestions", t => {
       |> Suggestions.suggestionsForShell(shell, _);
     t.describe("test configuration testing", t => {
       t.test("throws when positional", t => {
-        t.expect.fn(() => getCurrentArg([|""|])).toThrow();
-        t.expect.fn(() => getCurrentArg([|"-"|])).toThrow();
-        t.expect.fn(() => getCurrentArg([|"-"|])).toThrow();
+        t.expect.fn(() => getCurrentArg([|""|])).toThrow()
       });
       t.test("does not throw when not positional", t => {
+        t.expect.fn(() => getCurrentArg([|"-"|])).not.toThrow();
         t.expect.fn(() => getCurrentArg([|"--"|])).not.toThrow();
         t.expect.fn(() => getCurrentArg([|"-a"|])).not.toThrow();
         t.expect.fn(() => getCurrentArg([|"--arg"|])).not.toThrow();
       });
     });
     t.describe("empty values", t => {
+      t.test("is empty when no choices and no sub commands", t => {
+        let (args, _) = P.One.req(~args=[], ~doc="pos", T.string);
+        let result = get(args, [|"-"|]);
+        t.expect.list(result).toEqual([]);
+      });
+      t.test("returns a list of argument names when single dash", t => {
+        let (args, _) =
+          A.One.req(~args=[], ~name="--bake", ~doc="pos", T.string);
+        let (args, _) =
+          A.One.req(~args, ~name="--slice", ~doc="pos", T.string);
+        let result = get(args, [|"-"|]);
+        t.expect.list(result).toEqual(["--bake", "--slice"]);
+      });
       t.test("returns a list of argument names", t => {
         let (args, _) =
           A.One.req(~args=[], ~name="--bake", ~doc="pos", T.string);
