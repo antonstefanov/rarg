@@ -1,0 +1,13 @@
+(library
+   (name Ds)
+   (public_name ds)
+   (libraries ds.internal)
+   (modules Ds)
+)
+(
+    library
+    (name DsInternal)
+    (public_name ds.internal)
+    (libraries ds.seed pastel.lib)
+    (modules (:standard \ Ds))
+)
