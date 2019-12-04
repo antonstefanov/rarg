@@ -1,0 +1,17 @@
+{
+  "saveAndRun": {
+    "commands": [
+      {
+        "cmd": "clear && esy test",
+        "match": ".re"
+      }
+    ]
+  },
+  "code-runner.executorMapByFileExtension": {
+    ".re": "esy x qw"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/esy.lock": true
+  }
+}
