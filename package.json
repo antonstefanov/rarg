@@ -1,29 +1,37 @@
 {
-  "name": "hello-reason",
-  "version": "0.1.0",
-  "description": "Example Reason Esy Project",
+  "name": "ds-dev",
+  "version": "0.1.1",
+  "description": "DS description",
   "license": "MIT",
+  "author": { "name": "Anton Stefanov", "email": "anton.stefanov@live.com" },
   "esy": {
-    "build": "refmterr dune build -p #{self.name}",
+    "build": "refmterr dune build --profile=release",
     "NOTE": "Optional release Section. Customizes result of `esy release`",
-    "release": {
-      "bin": [
-        "Hello"
-      ]
-    },
-    "buildEnv": {
-      "ODOC_SYNTAX": "re"
-    }
+    "install": [
+      "esy-installer bin.install", "esy-installer ds.install",
+      "esy-installer tests.install"
+    ],
+    "buildEnv": { "ODOC_SYNTAX": "re" }
   },
   "scripts": {
-    "test": "esy x Hello",
-    "doc": "esy dune build @doc"
+    "start": "esy x bin",
+    "test": "esy x bash -cx ./scripts/test-dev.cmd",
+    "test-ci": "esy x bash -cx ./scripts/test-ci.cmd",
+    "example": "esy x example-basic",
+    "example-lwt": "esy x example-lwt",
+    "doc": "esy dune build @doc",
+    "opendoc":
+      "esy open '#{self.target_dir}/default/_doc/_html/ds/Ds/index.html'"
   },
+  "repository": "https://github.com/antonstefanov/ds",
+  "homepage": "https://github.com/antonstefanov/ds",
+  "bugs": "https://github.com/antonstefanov/ds/issues",
   "dependencies": {
-    "@opam/dune": "*",
+    "@opam/dune": "^1.10.0",
+    "@opam/lwt": "4.3.0",
+    "@opam/lwt_ppx": "1.2.3",
     "@reason-native/console": "*",
     "@reason-native/pastel": "*",
-    "@reason-native/rely": "*",
     "@esy-ocaml/reason": ">= 3.4.0 < 3.6.0",
     "refmterr": "*",
     "ocaml": "~4.8.1000"
@@ -31,6 +39,7 @@
   "devDependencies": {
     "@opam/merlin": "*",
     "ocaml": "~4.8.1000",
-    "@opam/odoc": "*"
+    "@opam/odoc": "*",
+    "@reason-native/rely": "*"
   }
 }
