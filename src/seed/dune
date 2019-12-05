@@ -1,5 +1,5 @@
 (library
   (name Seed)
-  (public_name ds.seed)
-  (libraries  pastel.lib)
-  )
+  (public_name rarg.seed)
+  (libraries str pastel.lib)
+)

@@ -1,13 +1,13 @@
 (library
-  (name DsTests)
-  (public_name ds.tests)
+  (name RargTests)
+  (public_name rarg.tests)
   ; IMPORTANT: -linkall flag is required to include all tests.
   (ocamlopt_flags -linkall -g)
   (libraries
     rely.lib
-    ds.seed
-    ds.internal
-    ds
+    rarg.seed
+    rarg.internal
+    rarg
   )
   (modules (:standard \ TestDev TestCi))
 )
@@ -16,7 +16,7 @@
   (name TestDev)
   (public_name TestDev.exe)
   (libraries
-    ds.tests
+    rarg.tests
   )
   (modules TestDev)
 )
@@ -25,7 +25,7 @@
   (name TestCi)
   (public_name TestCi.exe)
   (libraries
-    ds.tests
+    rarg.tests
   )
   (modules TestCi)
 )

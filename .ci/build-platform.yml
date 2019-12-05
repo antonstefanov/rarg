@@ -8,7 +8,7 @@ jobs:
       vmImage: ${{ parameters.vmImage }}
       demands: node.js
     timeoutInMinutes: 120 # This is mostly for Windows
-    steps: 
+    steps:
       - powershell: $Env:Path
         continueOnError: true
         condition: and(eq(variables['AGENT.OS'], 'Windows_NT'), and(eq(variables['Build.Reason'], 'PullRequest'), and(succeeded(), ne(variables['Build.SourceBranch'], variables['System.PullRequest.TargetBranch']))))
@@ -72,11 +72,11 @@ jobs:
       - template: utils/create-docs.yml
       - script: "esy test"
         displayName: "Test command"
-      - script: "esy release"
-        displayName: "esy release"
+      # - script: "esy release"
+      #   displayName: "esy release"
       - template: utils/publish-build-cache.yml
-      - task: PublishBuildArtifacts@1
-        displayName: "Publish Artifact: ${{ parameters.platform }}"
-        inputs:
-          PathtoPublish: "_release"
-          ArtifactName: ${{ parameters.platform }}
+      # - task: PublishBuildArtifacts@1
+      #   displayName: "Publish Artifact: ${{ parameters.platform }}"
+      #   inputs:
+      #     PathtoPublish: "_release"
+      #     ArtifactName: ${{ parameters.platform }}

@@ -1,0 +1,40 @@
+{
+  "name": "rarg",
+  "version": "0.6.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antonstefanov/rarg/tree/master/src/rarg"
+  },
+  "author": {
+    "name": "Anton Stefanov",
+    "email": "anton.stefanov@live.com"
+  },
+  "license": "MIT",
+  "keywords": ["cli", "args", "reasonml", "reason", "ocaml", "esy"],
+  "esy": {
+    "build": "refmterr dune build -p rarg",
+    "install": "esy-installer rarg.install"
+  },
+  "scripts": {
+    "release": "node ./scripts/esy-prepublish.js rarg.json"
+  },
+  "homepage": "https://github.com/antonstefanov/rarg",
+  "bugs": "https://github.com/antonstefanov/rarg/issues",
+  "dependencies": {
+    "@opam/dune": "^1.10.0",
+    "@opam/lwt": "4.3.0",
+    "@opam/lwt_ppx": "1.2.3",
+    "@reason-native/console": "*",
+    "@reason-native/pastel": "0.2.1",
+    "@esy-ocaml/reason": ">= 3.4.0 < 3.6.0",
+    "refmterr": "*",
+    "ocaml": "~4.8.1000"
+  },
+  "devDependencies": {
+    "@opam/merlin": "*",
+    "ocaml": "~4.8.1000",
+    "@opam/odoc": "*",
+    "@reason-native/rely": "*"
+  }
+}

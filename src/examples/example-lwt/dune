@@ -1,0 +1,6 @@
+(executable
+  (name ExampleLwt)
+  (public_name example-lwt)
+  (package example-lwt)
+  (libraries rarg lwt lwt.unix LwtCmds)
+  (preprocess (pps lwt_ppx)))

@@ -1,0 +1,13 @@
+Rarg_ComponentsHelp › Help › CmdFruits
+<bold>Fruits</bold>
+
+Command signature:
+  <white>my-app-name  <..options></white>
+
+
+
+Options:
+  <white>--fruits</white>  Fruits to cook <bold><..fruit></bold><italic> apple, banana</italic>
+  <white>--bake</white>    Whether to bake the fruit <bold>[bool]=false</bold><italic></italic>
+  <white>--cut</white>     Whether to cut the fruit <bold>[bool]=false</bold><italic></italic>
+

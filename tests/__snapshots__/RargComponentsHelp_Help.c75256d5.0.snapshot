@@ -1,0 +1,12 @@
+Rarg_ComponentsHelp › Help › CmdStart
+<bold>Start</bold>
+
+Command signature:
+  <white>my-app-name <sub-command></white>
+
+Sub-Commands:
+  <white>car</white>     Build a car
+  <white>find</white>    Find
+  <white>fruits</white>  Fruits
+
+

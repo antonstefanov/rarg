@@ -1,0 +1,13 @@
+(library
+   (name Rarg)
+   (public_name rarg)
+   (libraries rarg.internal)
+   (modules Rarg)
+)
+(
+    library
+    (name RargInternal)
+    (public_name rarg.internal)
+    (libraries str rarg.seed pastel.lib)
+    (modules (:standard \ Rarg))
+)

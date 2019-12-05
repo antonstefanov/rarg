@@ -33,6 +33,12 @@ let getDefault = (maybe: option('a), ~default: 'a): 'a =>
   | Some(x) => x
   };
 
+let getDefaultLazy = (maybe: option('a), ~default: unit => 'a): 'a =>
+  switch (maybe) {
+  | None => default()
+  | Some(x) => x
+  };
+
 let eq = (maybe: option('a), ~v: 'a): bool =>
   switch (maybe) {
   | None => false

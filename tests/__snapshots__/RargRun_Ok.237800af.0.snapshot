@@ -1,0 +1,8 @@
+Rarg_Run › Ok › AddPath
+Ok
+AddPath
+<cyan>To append to your shell config run:</cyan>
+<white>Fruits --rarg-add-path >> ~/.bash_profile</white>
+<cyan>Afterwards restart your terminal</cyan>
+# fruits
+alias fruits='Fruits'

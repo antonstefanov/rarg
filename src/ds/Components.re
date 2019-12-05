@@ -1,2 +1,0 @@
-module Span =
-  Pastel.Make({});

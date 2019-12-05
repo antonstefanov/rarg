@@ -1,0 +1,16 @@
+Rarg_ComponentsErrors › UnknownArgs › with positionals › renders suggestions when there's no good subcommands match
+Unknown sub command:
+  <red>tomat potat</red>
+Did you mean to call:
+  <cyan>cake</cyan>
+
+Unknown arguments provided:
+  <red>--bak</red>     uv1 uv2
+Did you mean:
+  <cyan>--bake, --cake</cyan>
+
+  <red>cak</red>     unknown-value1 unknown-value2
+Did you mean:
+  <cyan>--cake</cyan>
+
+

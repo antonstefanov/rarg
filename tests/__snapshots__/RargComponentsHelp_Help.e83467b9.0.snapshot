@@ -1,0 +1,16 @@
+Rarg_ComponentsHelp › Help › CmdCar
+<bold>Build a car</bold>
+Allows you to build amazing <cyan>cars</cyan> and more
+
+Command signature:
+  <white>my-app-name [sub-command] <..options></white>
+
+Sub-Commands:
+  <white>fruit</white>  Fruits
+
+Options:
+  <white>--car -c</white>  Car to build <bold><string></bold><italic></italic>
+  <white>--cat</white>     Cat <bold><string></bold><italic></italic>
+  <white>--color</white>   Paint color <bold>[string]=green</bold><italic></italic>
+  <white>--model</white>   The car model <bold>[string]</bold><italic></italic>
+

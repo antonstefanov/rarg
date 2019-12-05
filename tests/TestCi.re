@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */;
 
-DsTests.TestFramework.run(
+RargTests.TestFramework.run(
   Rely.RunConfig.(
     initialize()
     |> withReporters([Default, JUnit("./junit.xml")])

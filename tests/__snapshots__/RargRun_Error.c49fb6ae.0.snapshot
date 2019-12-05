@@ -1,0 +1,10 @@
+Rarg_Run › Error › ConfigError duplicate args
+Error
+ConfigError
+You must define unique argument names. <bold>Duplicates:</bold>
+
+<red>__positionals__</red>
+  <white>patterns2</white>  Patterns to find <bold><..string></bold><italic></italic>
+  <white>patterns</white>   Patterns to find <bold><..string></bold><italic></italic>
+
+

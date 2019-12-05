@@ -1,6 +1,0 @@
-(executable
-  (package bin)
-  (name Bin)
-  (public_name Bin)
-  (libraries lwt lwt.unix ds ds.seed)
-  (preprocess (pps lwt_ppx)))

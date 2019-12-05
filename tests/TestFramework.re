@@ -1,6 +1,6 @@
 let projectDir = Seed.ProjectRoot.get();
 
-DsInternal.Components.Span.setMode(HumanReadable);
+RargInternal.Components.Span.setMode(HumanReadable);
 
 include Rely.Make({
   let config =

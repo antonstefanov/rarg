@@ -1,1 +1,0 @@
-module Components = Components;

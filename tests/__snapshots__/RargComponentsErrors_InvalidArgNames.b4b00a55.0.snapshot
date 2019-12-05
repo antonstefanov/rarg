@@ -1,0 +1,6 @@
+Rarg_ComponentsErrors › InvalidArgNames › renders empty arg names
+Argument names must start with a -
+
+  <white></white>  Whether to bake the fruit <bold>[bool]=false</bold><italic></italic>
+
+

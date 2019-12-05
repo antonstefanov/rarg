@@ -1,0 +1,5 @@
+Rarg_Run › Error › UserError required args not provided
+Error
+UserError
+<white>--fruits</white><green> expected: <bold>1 or more</bold></green><red> received: <bold>0</bold></red> values
+

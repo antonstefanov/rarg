@@ -1,0 +1,4 @@
+Rarg_ComponentsTips › AddPathTip › shows a tip for nix bash
+<cyan>To append to your shell config run:</cyan>
+<white>/a/b/c --rarg-add-path >> ~/.bashrc</white>
+<cyan>Afterwards restart your terminal</cyan>

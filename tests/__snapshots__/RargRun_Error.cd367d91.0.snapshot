@@ -1,0 +1,10 @@
+Rarg_Run › Error › UserError provided args don't exist
+Error
+UserError
+
+Unknown arguments provided:
+  <red>--fruit</red>     
+Did you mean:
+  <cyan>--fruits, --cut</cyan>
+
+

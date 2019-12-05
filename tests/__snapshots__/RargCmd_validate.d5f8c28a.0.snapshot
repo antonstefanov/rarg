@@ -1,0 +1,10 @@
+Rarg_Cmd › validate › prints validation errors
+<bold>cmd-duplicate</bold>
+You must define unique argument names. <bold>Duplicates:</bold>
+
+<red>--v1</red>
+  <white>--v1</white>  v1 duplicate doc <bold><string></bold><italic></italic>
+  <white>--v1</white>  v1 doc <bold><bool></bold><italic></italic>
+
+
+

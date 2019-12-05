@@ -1,0 +1,4 @@
+Rarg_ComponentsErrors › ValidationError › ArgsCount › shows true recommendation when no info
+<white>--bake</white><green> expected type <bold>bool</bold></green><red>, but received<bold>tr</bold></red>
+Did you mean:
+  <cyan>true</cyan>

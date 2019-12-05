@@ -1,0 +1,2 @@
+Rarg_ComponentsErrors › ValidationError › ArgsCount › shows expected=3 received=5
+<white>--bake</white><green> expected: <bold>3</bold></green><red> received: <bold>5</bold></red> values

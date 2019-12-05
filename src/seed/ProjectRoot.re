@@ -1,8 +1,8 @@
 let get = () => {
-  switch (Env.getOpt("DS_ROOT")) {
+  switch (Env.getOpt("RARG_ROOT")) {
   | Some(dir) => dir
   | None =>
-    switch (Fs.closestDir(~dir=Sys.getcwd(), ~filename=".ds-root")) {
+    switch (Fs.closestDir(~dir=Sys.getcwd(), ~filename=".rarg-root")) {
     | Some(dir) => dir
     | None =>
       failwith(

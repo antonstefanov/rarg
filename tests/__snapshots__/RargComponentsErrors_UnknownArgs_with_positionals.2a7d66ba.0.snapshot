@@ -1,0 +1,14 @@
+Rarg_ComponentsErrors › UnknownArgs › with positionals › renders suggestions when no subcommands, no positionals
+Did not expect positional arguments, but received:
+  <red>tomat potat</red>
+
+Unknown arguments provided:
+  <red>--bak</red>     uv1 uv2
+Did you mean:
+  <cyan>--bake, --cake</cyan>
+
+  <red>cak</red>     unknown-value1 unknown-value2
+Did you mean:
+  <cyan>--cake</cyan>
+
+
