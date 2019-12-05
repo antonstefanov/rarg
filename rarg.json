@@ -1,6 +1,6 @@
 {
   "name": "rarg",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -29,12 +29,12 @@
     "@reason-native/pastel": "0.2.1",
     "@esy-ocaml/reason": ">= 3.4.0 < 3.6.0",
     "refmterr": "*",
-    "ocaml": "~4.8.1000"
+    "ocaml": "~4.8.1000",
+    "@reason-native/rely": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "ocaml": "~4.8.1000",
-    "@opam/odoc": "*",
-    "@reason-native/rely": "*"
+    "@opam/odoc": "*"
   }
 }

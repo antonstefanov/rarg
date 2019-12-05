@@ -1,6 +1,6 @@
 {
   "name": "rarg-dev",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A simple, focused and expressive library for building command line applications.",
   "license": "MIT",
   "author": { "name": "Anton Stefanov", "email": "anton.stefanov@live.com" },
@@ -32,15 +32,14 @@
     "@opam/lwt_ppx": "1.2.3",
     "@reason-native/console": "*",
     "@reason-native/pastel": "0.2.1",
-    "@reason-native/rely": "^3.1.0",
     "@esy-ocaml/reason": ">= 3.5.0 < 3.6.0",
     "refmterr": "*",
-    "ocaml": "~4.8.1000"
+    "ocaml": "~4.8.1000",
+    "@reason-native/rely": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "ocaml": "~4.8.1000",
-    "@opam/odoc": "*",
-    "@reason-native/rely": "*"
+    "@opam/odoc": "*"
   }
 }
