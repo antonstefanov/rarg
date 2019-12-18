@@ -182,6 +182,16 @@ let values = vs => List.map(getValue, vs);
 let suggestionsForShell = (shell: Seed.Process.Shell.t, suggestions) => {
   switch (shell) {
   | Bash => List.map(((s, _)) => s, suggestions)
-  | Zsh => List.map(((s, d)) => s ++ ":" ++ d, suggestions)
+  | Zsh =>
+    List.map(
+      ((s, d)) => {
+        let fl = switch(Seed.Strings.splitAtChar(d, ~char='\n')) {
+          | None => d
+          | Some((firstLine, _)) => firstLine
+        };
+        s ++ ":" ++ fl;
+      },
+      suggestions,
+    )
   };
 };

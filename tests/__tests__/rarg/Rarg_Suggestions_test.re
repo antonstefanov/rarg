@@ -160,6 +160,32 @@ describe("Rarg_Suggestions", t => {
       t.expect.list(result).toEqual(["bake", "slice", "apple", "banana"]);
     });
   });
+  t.describe("suggestionsForShell", t => {
+    t.test("creates a key list for Bash", t => {
+      let result =
+        Suggestions.suggestionsForShell(
+          Bash,
+          [("key1", "desc1"), ("key2", "desc2")],
+        );
+      t.expect.list(result).toEqual(["key1", "key2"]);
+    });
+    t.test("creates a key:value pair for zsh", t => {
+      let result =
+        Suggestions.suggestionsForShell(
+          Zsh,
+          [("key1", "desc1"), ("key2", "desc2")],
+        );
+      t.expect.list(result).toEqual(["key1:desc1", "key2:desc2"]);
+    });
+    t.test("takes only the first line of zsh descriptions", t => {
+      let result =
+        Suggestions.suggestionsForShell(
+          Zsh,
+          [("key1", "line1\nline2\nline3")],
+        );
+      t.expect.list(result).toEqual(["key1:line1"]);
+    });
+  });
   t.describe("getValuesSuggestions", t => {
     exception
       WrongTestConfiguration(string, array(string), string, array(string));
