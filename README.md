@@ -9,7 +9,7 @@ Optimised for native ReasonML/OCaml.
 
 - **autocompletion** - fast and comprehensive autocompletion of commands, arguments and values
 - **sync** and **async** commands support
-- **sub commands** - you can easily define a whole tree of commands
+- **sub commands** - you can easily define a whole tree of commands and compose them
 - **auto configuration validation** - you can validate your whole commands tree configuration with a single function call in your tests
 - **auto help generation**
 - **autocorrection**
@@ -149,8 +149,8 @@ You can check the local [examples](https://github.com/antonstefanov/rarg/tree/ma
 
 - `cmdliner` is hosted on `opam` | `rarg` on `npm`
 - it's likely that you would be more familiar with `cmdliner`'s API if you have an `OCaml` background and with `rarg`'s API if you are coming from other languages (including `JS`)
-- `cmdliner` is very mature and has a large ecosystem behind it, if you are already using it there's no point of switching to `rarg`
-- `rarg` has autocompletions, smaller API footprint and is simpler and less abstract in nature
+- `cmdliner` is very mature and has a large ecosystem behind it
+- `rarg` has autocompletions, smaller API footprint, validation, composable commands and is simpler and less abstract in nature
 
 ## Notes
 
