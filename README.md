@@ -33,7 +33,10 @@ esy add rarg
 
 1. Define command arguments with [Args](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Args/index.html).
 
-```reasonml
+```reason
+module Args = Rarg.Args;
+module Type = Rarg.Type;
+
 module MyCmd = {
   let args = []
   let (args, getCopy) = Args.One.boolFlag(
@@ -51,13 +54,14 @@ module MyCmd = {
       Type.string,
     );
 
-  ...
+  // ...
+};
 ```
 
 For the [Type](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Type/index.html) argument you can either choose one of the [predefined argument types](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Type/index.html#type_predefined) or define custom argument types, for example:
 
-```reasonml
-  ...
+```reason
+  // ...
 
   type fruit = | Apple | Banana;
   let fruit: Type.t(fruit) = {
@@ -75,26 +79,31 @@ For the [Type](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Type/inde
   };
   let (args, getFruits) = Args.Many.req(~args, ~name="--fruits", ~doc="Fruits", fruit);
 
-  ...
+  // ...
 ```
 
 2. Define the command with [Cmd](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Cmd/index.html):
 
-```reasonml
-  ...
+```reason
+  // ...
 
+  // Define the function that you want to execute
   let handle = (~fruits: list(fruit), ~copy: bool, ~color: string) => ();
-  // Define a run function that will use the getters returned from `Args` to get all provided user arguments.
+
+  // Define a run function that will use the getters returned from `Args` to get all provided user arguments. It allows you to use labeled arguments as opposed to relying on arg positions.
   let run = m => handle(~fruits=getFruits(m), ~copy=getCopy(m), ~color=getColor(m));
+
+  // Define a command record that you can use to run your command,
+  // pass it as a child to other commands or test it
   let cmd: Cmd.t(unit) = Cmd.make(~name="My Command", ~version="1.0", ~args, ~run, ());
 } // module MyCmd close
 ```
 
 You can also easily define sub commands:
 
-```reasonml
+```reason
 module AnotherCmd = {
-  ...
+  // ...
 
   let cmd: Cmd.t(unit) =
     Cmd.make(
@@ -105,14 +114,14 @@ module AnotherCmd = {
       ~children=[("my-cmd", MyCmd.cmd)],
       (),
     );
-}
+};
 ```
 
 > In `rarg` every command/subcommand is a complete unit of work, that can exist on its own, has no dependencies of its parents. That's why every command has its own version.
 
 3. And finally you can run your command with [Run](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Run/index.html)
 
-```reasonml
+```reason
 let main = {
   switch (Run.autorun(MyCmd.cmd)) {
   | Ok(_) => exit(0)

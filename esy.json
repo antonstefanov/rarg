@@ -1,6 +1,6 @@
 {
   "name": "rarg-dev",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A simple, focused and expressive library for building command line applications.",
   "license": "MIT",
   "author": { "name": "Anton Stefanov", "email": "anton.stefanov@live.com" },
