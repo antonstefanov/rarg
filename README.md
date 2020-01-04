@@ -10,7 +10,7 @@ Optimised for native ReasonML/OCaml.
 - **autocompletion** - fast and comprehensive autocompletion of commands, arguments and values
 - **sync** and **async** commands support
 - **sub commands** - you can easily define a whole tree of commands
-- **auto configuration validation** - you can validate your whole sub commands tree configuration with a single function call in your tests
+- **auto configuration validation** - you can validate your whole commands tree configuration with a single function call in your tests
 - **auto help generation**
 - **autocorrection**
 
@@ -90,7 +90,9 @@ For the [Type](https://rarg.z13.web.core.windows.net/rarg/RargInternal/Type/inde
   // Define the function that you want to execute
   let handle = (~fruits: list(fruit), ~copy: bool, ~color: string) => ();
 
-  // Define a run function that will use the getters returned from `Args` to get all provided user arguments. It allows you to use labeled arguments as opposed to relying on arg positions.
+  // Define a mapping function that will use the getters returned from `Args`
+  // and pass the provided user arguments.
+  // It allows you to use labeled arguments as opposed to relying on arg positions.
   let run = m => handle(~fruits=getFruits(m), ~copy=getCopy(m), ~color=getColor(m));
 
   // Define a command record that you can use to run your command,
